@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const { DataTypes } = require('sequelize')
-const sequelize = require('../db/connection')
+const sequelize = require('../../database/connection')
+const actions = require('../constants/actions')
 
 const PermissionDetail = sequelize.define('PermissionDetail', {
   id: {
@@ -95,13 +96,7 @@ function validateActions(req, res, next) {
  * @param {*} transaction transaction reference
  */
 async function addDetails(perId, transaction) {
-  const actionNames = [
-    'CREATE_USER', 'VIEW_USER', 'EDIT_USER', 'DELETE_USER',
-    'CREATE_PERMISSION', 'VIEW_PERMISSION', 'EDIT_PERMISSION', 'DELETE_PERMISSION',
-    'CREATE_WAREHOUSE', 'VIEW_WAREHOUSE', 'EDIT_WAREHOUSE', 'DELETE_WAREHOUSE',
-    'CREATE_PRODUCT', 'VIEW_PRODUCT', 'EDIT_PRODUCT', 'DELETE_PRODUCT',
-  ]
-  for (const action of actionNames) {
+  for (const action of actions) {
     await PermissionDetail.create(await createDetail(perId, action), { transaction: transaction })
   }
 }

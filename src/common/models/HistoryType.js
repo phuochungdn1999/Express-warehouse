@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const sequelize = require('../db/connection')
+const sequelize = require('../../database/connection')
 const { DataTypes } = require('sequelize')
 
 const HistoryType = sequelize.define('HistoryType', {
