@@ -1,4 +1,5 @@
 const { History } = require("../../../common/models/History")
+const { HistoryType } = require("../../../common/models/HistoryType")
 
 async function getCount() {
   const itemCount = await History.count()
@@ -24,8 +25,17 @@ async function getOne(id) {
   return history
 }
 
+async function getTypes(options) {
+  const types = await HistoryType.findAll({ 
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    ...options
+  })
+  return types
+}
+
 module.exports = {
   getCount, 
   getAll,
-  getOne
+  getOne,
+  getTypes,
 }
