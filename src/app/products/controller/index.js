@@ -9,4 +9,9 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })
 
+// get products by their warehouse
+router.get('/warehouse/:id', async (req, res) => {
+  return await service.getProductInWarehouse(req, res)
+})
+
 module.exports = router

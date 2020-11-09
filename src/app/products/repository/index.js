@@ -1,7 +1,8 @@
+const { NotFoundError } = require("../../../common/errors/http-errors")
 const { Product } = require("../../../common/models/Product")
 
-async function getCount() {
-  const itemCount = await Product.count()
+async function getCount(options) {
+  const itemCount = await Product.count(options)
   return itemCount
 }
 
@@ -22,8 +23,18 @@ async function getOne(id, options) {
   return product
 }
 
+async function getOneByIdOrFail(id, options) {
+  const product = await Product.findOne({ 
+    where: { id },
+    ...options
+  })
+  if (!product) throw new NotFoundError('Product not found')
+  return product
+}
+
 module.exports = {
   getCount, 
   getAll,
-  getOne
+  getOne,
+  getOneByIdOrFail,
 }

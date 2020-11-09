@@ -1,8 +1,10 @@
-const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const { Warehouse } = require('../../../common/models/Warehouse')
 const { Category } = require('../../../common/models/Category')
 const { NotFoundError } = require('../../../common/errors/http-errors')
+
+const warehouseRepository = require('../../warehouses/repository')
+const repository = require('../repository')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -44,7 +46,27 @@ async function getOne(req, res) {
     .json({ data: product })
 }
 
+async function getProductInWarehouse(req, res) {
+  const itemCount = await repository.getCount({
+    include: {
+      model: Warehouse,
+      as: 'warehouses',
+      where: { id: req.params.id },
+    }
+  })
+  const options = pagination(req.query, itemCount)
+  const products = await warehouseRepository.getProducts(req.params.id, options)
+
+  return res
+    .status(200)
+    .json({
+      data: products,
+      ...options
+    })
+}
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  getProductInWarehouse,
 }
