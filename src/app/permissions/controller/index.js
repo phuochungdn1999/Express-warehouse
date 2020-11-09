@@ -9,4 +9,8 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })
 
+router.get('/:id/details', async (req, res) => {
+  return await service.getDetails(req, res)
+})
+
 module.exports = router

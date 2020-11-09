@@ -5,6 +5,11 @@ async function getCount() {
   return itemCount
 }
 
+/**
+ * 
+ * @param {*} options 
+ * Should be paginate options
+ */
 async function getAll(options) {
   const permissions = await Permission.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt'] },

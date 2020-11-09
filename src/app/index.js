@@ -7,8 +7,10 @@ const warehouses = require('./warehouses/controller')
 const permissions = require('./permissions/controller')
 const products = require('./products/controller')
 const histories = require('./histories/controller')
+const { PORT } = require('../common/environments')
 
 require('../common/helpers/handle-uncaught-errors')()
+require('../common/helpers/model-association')()
 
 app.use(express.json())
 app.use(morgan('dev'))
@@ -20,7 +22,6 @@ app.use('/products', products)
 app.use('/histories', histories)
 app.use(error)
 
-const port = process.env.PORT | 3000
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`)
 })

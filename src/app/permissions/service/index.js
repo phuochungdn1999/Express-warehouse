@@ -23,7 +23,24 @@ async function getOne(req, res) {
     .json({ data: permission })
 }
 
+async function getDetails(req, res) {
+  const permission = await repository.getOne(req.params.id)
+  if (!permission) {
+    return res
+      .status(404)
+      .json({ statusCode: 404, message: 'Permission not found' })
+  }
+
+  const details = await permission.getPermissionDetails({
+    attributes: ['actionCode', 'actionName', 'checkAction']
+  })
+  return res.status(200).json({
+    data: details
+  })
+}
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  getDetails,
 }
