@@ -23,7 +23,18 @@ async function getOne(req, res) {
     .json({ data: history })
 }
 
+async function getTypes(req, res) {
+  const itemCount = await repository.getCount()
+  const options = pagination(req.query, itemCount)
+
+  const types = await repository.getTypes(options)
+  return res
+    .status(200)
+    .json({ data: types })
+}
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  getTypes,
 }
