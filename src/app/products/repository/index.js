@@ -7,19 +7,17 @@ async function getCount() {
 
 async function getAll(options) {
   const products = await Product.findAll({
-    attributes: { exclude: ['createdAt', 'updatedAt'] },
     ...options
   })
   return {
-    products,
-    ...options
+    products
   }
 }
 
-async function getOne(id) {
+async function getOne(id, options) {
   const product = await Product.findOne({ 
     where: { id },
-    attributes: { exclude: ['createdAt', 'updatedAt'] }
+    ...options
   })
   return product
 }
