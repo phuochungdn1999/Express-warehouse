@@ -7,6 +7,7 @@ const warehouses = require('./warehouses/controller')
 const permissions = require('./permissions/controller')
 const products = require('./products/controller')
 const histories = require('./histories/controller')
+const categories = require('./categories/controller')
 const error = require('../common/middlewares/error-handler-middleware')
 const { PORT } = require('../common/environments')
 
@@ -21,6 +22,7 @@ app.use('/warehouses', warehouses)
 app.use('/permissions', permissions)
 app.use('/products', products)
 app.use('/histories', histories)
+app.use('/categories', categories)
 app.use(error)
 
 app.listen(PORT, () => {

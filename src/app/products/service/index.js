@@ -2,6 +2,7 @@ const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const { Warehouse } = require('../../../common/models/Warehouse')
 const { Category } = require('../../../common/models/Category')
+const { NotFoundError } = require('../../../common/errors/http-errors')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -37,11 +38,7 @@ async function getOne(req, res) {
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     }]
   })
-  if (!product) {
-    return res
-      .status(404)
-      .json({ message: 'Product not found' })
-  }
+  if (!product) throw new NotFoundError('Product not found')
   return res
     .status(200)
     .json({ data: product })
