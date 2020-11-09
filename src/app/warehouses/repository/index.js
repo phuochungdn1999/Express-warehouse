@@ -17,10 +17,10 @@ async function getAll(options) {
   }
 }
 
-async function getOne(id) {
+async function getOne(id, options) {
   const warehouse = await Warehouse.findOne({ 
     where: { id },
-    attributes: { exclude: ['createdAt', 'updatedAt'] }
+    ...options
   })
   return warehouse
 }

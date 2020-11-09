@@ -23,6 +23,10 @@ async function getOne(id, options) {
   return product
 }
 
+async function getOneByName(name) {
+  return await Product.findOne({ where: { name } })
+}
+
 async function getOneByIdOrFail(id, options) {
   const product = await Product.findOne({ 
     where: { id },
@@ -36,5 +40,6 @@ module.exports = {
   getCount, 
   getAll,
   getOne,
+  getOneByName,
   getOneByIdOrFail,
 }
