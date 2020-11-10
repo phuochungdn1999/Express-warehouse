@@ -23,7 +23,20 @@ async function getOne(req, res) {
     .json({ data: warehouse })
 }
 
+async function createOne(req, res) {
+  const transaction = await sequelize.transaction()
+  const warehouse = await repository.createOne(req.body,{transaction: transaction})
+
+  await transaction.commit()
+  return res
+    .status(201)
+    .json({
+      data: warehouse
+    })
+}
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  createOne
 }

@@ -40,15 +40,12 @@ async function getWarehousesInCity(id){
 } 
 
 async function createOne(body, options) {
-  console.log(body)
-  console.log(body.name)
   await failIfDuplicated({ name: body.name })
   return City.create(body, options)
 }
 
 async function failIfDuplicated(condition) {
   const count = await getCount({ where: condition })
-  console.log('count',count)
   if (count > 0) throw new ConflictedError('Duplicated')
 }
 
