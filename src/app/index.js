@@ -8,6 +8,8 @@ const permissions = require('./permissions/controller')
 const products = require('./products/controller')
 const histories = require('./histories/controller')
 const categories = require('./categories/controller')
+const cities = require('./cities/controller')
+const auth = require('./auth/controller')
 const error = require('../common/middlewares/error-handler-middleware')
 const { PORT } = require('../common/environments')
 
@@ -17,12 +19,15 @@ require('../common/helpers/model-association')()
 app.use(express.json())
 app.use(morgan('dev'))
 
+app.use('/auth', auth)
 app.use('/users', users)
 app.use('/warehouses', warehouses)
 app.use('/permissions', permissions)
 app.use('/products', products)
 app.use('/histories', histories)
 app.use('/categories', categories)
+app.use('/cities', cities)
+
 app.use(error)
 
 app.listen(PORT, () => {
