@@ -1,8 +1,8 @@
 const { Warehouse } = require("../../../common/models/Warehouse")
-const { NotFoundError } = require('../../..//common/errors/http-errors')
+const { NotFoundError,ConflictedError } = require('../../..//common/errors/http-errors')
 
-async function getCount() {
-  const itemCount = await Warehouse.count()
+async function getCount(options) {
+  const itemCount = await Warehouse.count(options)
   return itemCount
 }
 
@@ -34,6 +34,7 @@ async function getOneByIdOrFail(id, options) {
   return warehouse
 }
 
+
 /**
  * @param {*} id
  * Warehouse id 
@@ -43,10 +44,22 @@ async function getProducts(id, options) {
   return warehouse.getProducts(options)
 }
 
+async function createOne(body, options) {
+  await failIfDuplicated({ name: body.name })
+  return Warehouse.create(body, options)
+}
+
+async function failIfDuplicated(condition) {
+  const count = await getCount({ where: condition })
+  console.log('count',count)
+  if (count > 0) throw new ConflictedError('Duplicated')
+}
+
 module.exports = {
   getCount, 
   getAll,
   getOne,
   getOneByIdOrFail,
   getProducts,
+  createOne
 }

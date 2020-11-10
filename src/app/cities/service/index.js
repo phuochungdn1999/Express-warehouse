@@ -1,5 +1,6 @@
 const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
+const sequelize = require('../../../database/connection')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -23,7 +24,33 @@ async function getOne(req, res) {
     .json({ data: city })
 }
 
+async function getWarehousesInCity(req,res){
+  const city = await repository.getWarehousesInCity(req.params.id)
+  if (!city) {
+    return res
+      .status(404)
+      .json({ message: 'City not found' })
+  }
+  return res
+    .status(200)
+    .json({ data: city })
+}
+async function createOne(req, res) {
+  const transaction = await sequelize.transaction()
+  const city = await repository.createOne(req.body,{transaction: transaction})
+
+  await transaction.commit()
+  return res
+    .status(201)
+    .json({
+      data: city
+    })
+}
+
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  getWarehousesInCity,
+  createOne
 }

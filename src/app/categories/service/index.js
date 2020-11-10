@@ -6,10 +6,10 @@ async function getAll(req, res) {
   const itemCount = await repository.getCount()
   const options = pagination(req.query, itemCount)
 
-  const categories = await repository.getAll(options)
+  const service = await repository.getAll(options)
   return res
     .status(200)
-    .json({ data: categories })
+    .json({ data: service })
 }
 
 async function getOne(req, res) {
@@ -24,7 +24,18 @@ async function getOneByIdOrFail(req, res) {
   if (!category) throw new NotFoundError('Category not found')
   return res
     .status(200)
-    .json({ data: category })
+    .json({ data: service })
+}
+async function createOne(req,res){
+  const transaction = await sequelize.transaction()
+  const categories = await repository.createOne(req.body,{transaction: transaction})
+
+  await transaction.commit()
+  return res
+    .status(201)
+    .json({
+      data: categories
+    })
 }
 
 module.exports = {
