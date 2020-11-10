@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const service = require('../service')
 const { auth } = require('../../../common/middlewares/auth')
-const { validateManagingProduct } = require('../../../common/models/Product')
+const { validateManagingProduct, validateProduct } = require('../../../common/models/Product')
 
 router.get('/', async (req, res) => {
   return await service.getAll(req, res)
@@ -23,6 +23,10 @@ router.get('/warehouse/:id', async (req, res) => {
  */
 router.post('/', [auth, validateManagingProduct], async (req, res) => {
   return await service.createOne(req, res)
+})
+
+router.patch('/:id', [auth, validateProduct], async (req, res) => {
+  return await service.updateOne(req, res)
 })
 
 module.exports = router

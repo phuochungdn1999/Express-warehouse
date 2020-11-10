@@ -1,5 +1,6 @@
 const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
+const { NotFoundError } = require('../../../common/errors/http-errors')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -13,11 +14,14 @@ async function getAll(req, res) {
 
 async function getOne(req, res) {
   const category = await repository.getOne(req.params.id)
-  if (!category) {
-    return res
-      .status(404)
-      .json({ message: 'Category not found' })
-  }
+  return res
+    .status(200)
+    .json({ data: category })
+}
+
+async function getOneByIdOrFail(req, res) {
+  const category = await repository.getOne(req.params.id)
+  if (!category) throw new NotFoundError('Category not found')
   return res
     .status(200)
     .json({ data: category })
@@ -25,5 +29,6 @@ async function getOne(req, res) {
 
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  getOneByIdOrFail,
 }

@@ -9,6 +9,7 @@ const { Category } = require('../../../common/models/Category')
 const { NotFoundError, ForbiddenError, BadRequestError } = require('../../../common/errors/http-errors')
 
 const warehouseRepository = require('../../warehouses/repository')
+const categoryRepository = require('../../categories/repository')
 const repository = require('../repository')
 
 async function getAll(req, res) {
@@ -122,6 +123,16 @@ async function createOne(req, res) {
       .json({ statusCode: 200 })
 }
 
+async function updateOne(req, res) {
+  await repository.getOneByIdOrFail(req.params.id)
+  await categoryRepository.getOneByIdOrFail(req.body.categoryId)
+
+  await Product.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
+
+// SUPPORTER METHODS
+
 /**
  * @Usage This function create a new product with data from req param,
  * then create WarehouseProduct middle table between Product & Warehouse and
@@ -133,7 +144,7 @@ async function createOne(req, res) {
 async function createNewProductAndAddRelationship(newProduct, transaction, warehouse) {
   try {
     // create product & add relationship to warehouse
-    const product = await Product.create(newProduct, {transaction: transaction})
+    const product = await repository.createOne(newProduct, { transaction: transaction })
     const warehProd = await warehouse.addProduct(product.id, {
       transaction: transaction,
       through: { stock: newProduct.stock }
@@ -197,4 +208,5 @@ module.exports = {
   getOne,
   getProductInWarehouse,
   createOne,
+  updateOne,
 }
