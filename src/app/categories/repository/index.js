@@ -28,6 +28,8 @@ async function getOne(id) {
 }
 
 async function getOneByIdOrFail(id,options) {
+  console.log('asdas')
+  console.log('123123',options)
   const category = await Category.findOne({ 
     where: { id },
     ...options,

@@ -1,4 +1,6 @@
 const repository = require('../repository')
+const { Product } = require('../../../common/models/Product')
+
 const pagination = require('../../../common/helpers/pagination')
 const { NotFoundError } = require('../../../common/errors/http-errors')
 
@@ -39,7 +41,13 @@ async function createOne(req,res){
 }
 
 async function getProductsByCategory(req, res) {
-  const category = await repository.getProductsByCategory(req.params)
+  const category = await repository.getOneByIdOrFail(req.params.id, {
+    include: {
+      model: Product,
+      as: 'products',
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    }
+  })
   
   return res.status(200).json({ data: category })
 }
