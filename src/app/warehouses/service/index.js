@@ -1,4 +1,5 @@
 const pagination = require('../../../common/helpers/pagination')
+const { User } = require('../../../common/models/User')
 
 const repository = require('../repository')
 const userRepository = require('../../users/repository')
