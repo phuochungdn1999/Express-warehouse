@@ -125,7 +125,7 @@ async function createOne(req, res) {
 
 async function updateOne(req, res) {
   await repository.getOneByIdOrFail(req.params.id)
-  await categoryRepository.getOneByIdOrFail(req.body.categoryId)
+  if (req.body.categoryId) await categoryRepository.getOneByIdOrFail(req.body.categoryId)
 
   await Product.update(req.body, { where: { id: req.params.id } })
   return res.json({ status: 200 })
