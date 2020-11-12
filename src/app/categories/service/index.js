@@ -38,8 +38,15 @@ async function createOne(req,res){
     })
 }
 
+async function getProductsByCategory(req, res) {
+  const category = await repository.getProductsByCategory(req.params)
+  
+  return res.status(200).json({ data: category })
+}
+
 module.exports = {
   getAll,
   getOne,
   getOneByIdOrFail,
+  getProductsByCategory
 }

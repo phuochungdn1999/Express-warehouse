@@ -2,7 +2,7 @@ const router = require('express').Router()
 const service = require('../service')
 const { validateWarehouse } = require('../../../common/models/Warehouse')
 const { checkAction } = require('../../../common/middlewares/check-action')
-
+const {auth} = require('../../../common/middlewares/auth')
 
 router.get('/', async (req, res) => {
   return await service.getAll(req, res)

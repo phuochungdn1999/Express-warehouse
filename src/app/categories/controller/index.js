@@ -14,4 +14,9 @@ router.post('/', [validateCategory], async (req, res) => {
   return await service.createOne(req, res)
 })
 
+router.get('/products/:id', async (req, res) => {
+  return await service.getProductsByCategory(req, res)
+})
+
+
 module.exports = router

@@ -1,5 +1,6 @@
 const { NotFoundError } = require("../../../common/errors/http-errors")
 const { Category } = require("../../../common/models/Category")
+const { Product } = require("../../../common/models/Product")
 const { ConflictedError } = require("../../../common/errors/http-errors")
 
 async function getCount(options) {
@@ -26,9 +27,10 @@ async function getOne(id) {
   return category
 }
 
-async function getOneByIdOrFail(id) {
+async function getOneByIdOrFail(id,options) {
   const category = await Category.findOne({ 
     where: { id },
+    ...options,
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   })
   if (!category) throw new NotFoundError('Category not found')
@@ -44,6 +46,24 @@ async function failIfDuplicated(condition) {
   const count = await getCount({ where: condition })
   if (count > 0) throw new ConflictedError('Duplicated')
 }
+async function getProductsByCategory(body,options) {
+  const category = await Category.findOne({
+    where: {
+        id: body.id
+    }
+})
+if (!category) 
+    return null
+const products = await category.getProducts({
+    attributes: {
+        exclude: ['createdAt', 'updatedAt']
+    }
+})
+console.log(options)
+return products
+
+}
+
 
 module.exports = {
   getCount, 
@@ -51,4 +71,5 @@ module.exports = {
   getOne,
   getOneByIdOrFail,
   createOne,
+  getProductsByCategory
 }
