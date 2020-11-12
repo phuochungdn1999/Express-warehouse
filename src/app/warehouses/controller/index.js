@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const service = require('../service')
 const { validateWarehouse } = require('../../../common/models/Warehouse')
+const { checkAction } = require('../../../common/middlewares/check-action')
 
 
 router.get('/', async (req, res) => {
