@@ -34,7 +34,6 @@ async function getOneByIdOrFail(id, options) {
   return warehouse
 }
 
-
 /**
  * @param {*} id
  * Warehouse id 
