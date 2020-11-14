@@ -24,8 +24,18 @@ async function getOne(id) {
   return user
 }
 
+async function getOneByIdOrFail(id, options) {
+  const warehouse = await Warehouse.findOne({ 
+    where: { id },
+    ...options
+  })
+  if (!warehouse) throw new NotFoundError('Warehouse not found')
+  return warehouse
+}
+
 module.exports = {
   getCount, 
   getAll,
-  getOne
+  getOne,
+  getOneByIdOrFail
 }

@@ -1,12 +1,12 @@
+const { ConflictedError } = require("../../../common/errors/http-errors")
 const { Permission } = require("../../../common/models/Permission")
 
-async function getCount() {
-  const itemCount = await Permission.count()
+async function getCount(options) {
+  const itemCount = await Permission.count(options)
   return itemCount
 }
 
 /**
- * 
  * @param {*} options 
  * Should be paginate options
  */
@@ -29,8 +29,19 @@ async function getOne(id) {
   return permission
 }
 
+async function createOne(body, options) {
+  await failIfDuplicated({ permissionName: body.permissionName })
+  return Permission.create(body, options)
+}
+
+async function failIfDuplicated(condition) {
+  const count = await getCount({ where: condition })
+  if (count > 0) throw new ConflictedError('Duplicated')
+}
+
 module.exports = {
   getCount, 
   getAll,
-  getOne
+  getOne,
+  createOne,
 }

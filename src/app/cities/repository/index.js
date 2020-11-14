@@ -1,43 +1,47 @@
-const { NotFoundError } = require("../../../common/errors/http-errors")
-const { Category } = require("../../../common/models/Category")
+const { City } = require("../../../common/models/City")
+const {Warehouse } = require("../../../common/models/Warehouse")
 const { ConflictedError } = require("../../../common/errors/http-errors")
 
 async function getCount(options) {
-  const itemCount = await Category.count(options)
+  const itemCount = await City.count(options)
   return itemCount
 }
 
 async function getAll(options) {
-  const categories = await Category.findAll({
+  const histories = await City.findAll({
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     ...options
   })
   return {
-    categories,
+    histories,
     ...options
   }
 }
 
 async function getOne(id) {
-  const category = await Category.findOne({ 
+  const city = await City.findOne({ 
     where: { id },
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   })
-  return category
+  return city
 }
 
-async function getOneByIdOrFail(id) {
-  const category = await Category.findOne({ 
-    where: { id },
-    attributes: { exclude: ['createdAt', 'updatedAt'] }
+async function getWarehousesInCity(id){
+  const city = await City.findOne({ 
+    where: { id: id },
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
+    include: {
+      model: Warehouse,
+      as: 'warehouses',
+      attributes: ['id', 'name', 'address', 'description']
+    }
   })
-  if (!category) throw new NotFoundError('Category not found')
-  return category
-}
+  return city
+} 
 
 async function createOne(body, options) {
   await failIfDuplicated({ name: body.name })
-  return Category.create(body, options)
+  return City.create(body, options)
 }
 
 async function failIfDuplicated(condition) {
@@ -49,6 +53,6 @@ module.exports = {
   getCount, 
   getAll,
   getOne,
-  getOneByIdOrFail,
-  createOne,
+  getWarehousesInCity,
+  createOne
 }
