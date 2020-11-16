@@ -17,6 +17,14 @@ async function getAll(options) {
     ...options
   }
 }
+async function getOneByIdOrFail(id, options) {
+  const city = await City.findOne({ 
+    where: { id },
+    ...options
+  })
+  if (!city) throw new NotFoundError('City not found')
+  return city
+}
 
 async function getOne(id) {
   const city = await City.findOne({ 
@@ -54,5 +62,6 @@ module.exports = {
   getAll,
   getOne,
   getWarehousesInCity,
-  createOne
+  createOne,
+  getOneByIdOrFail
 }

@@ -1,8 +1,10 @@
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
+const { Warehouse } = require('../../../common/models/Warehouse')
 
 const repository = require('../repository')
 const userRepository = require('../../users/repository')
+const cityRepository = require('../../cities/repository')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -86,11 +88,20 @@ async function applyUserToWarehouse(req, res) {
   return res.status(200).json({ statusCode: 200 })
 }
 
+async function updateOne(req, res) {
+  await repository.getOneByIdOrFail(req.params.id)
+  if (req.body.cityId) await cityRepository.getOneByIdOrFail(req.body.cityId)
+
+  await Warehouse.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
+
 module.exports = {
   getAll,
   getOne,
   getOneWithUsers,
   getWarehouseByUserId,
   createOne,
-  applyUserToWarehouse
+  applyUserToWarehouse,
+  updateOne
 }

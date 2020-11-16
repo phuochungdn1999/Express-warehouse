@@ -33,4 +33,10 @@ router.post('/user', [
 router.post('/', [validateWarehouse], async (req, res) => {
   return await service.createOne(req, res)
 })
+
+router.patch('/:id', [auth, validateWarehouse], async (req, res) => {
+  return await service.updateOne(req, res)
+})
+
+
 module.exports = router
