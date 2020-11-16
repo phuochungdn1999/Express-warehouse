@@ -1,6 +1,7 @@
 const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
+const sequelize = require('../../../database/connection')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -24,10 +25,41 @@ async function getOne(req, res) {
     .json({ data: user })
 }
 
+async function createOne(req,res){
+  const transaction = await sequelize.transaction()
+  const users = await repository.createOne(req.body,{transaction: transaction})
+
+  await transaction.commit()
+  return res
+    .status(201)
+    .json({
+      data: users
+    })
+}
+
 async function updateOne(req, res) {
  
   await User.update(req.body, { where: { id: req.params.id } })
+  await updateToEs(req)
   return res.json({ status: 200 })
+}
+
+async function updateToEs(req){
+  client.update({
+    index:"users",
+    id:req.params.id,
+    body:{
+      doc:{
+        name:req.body.name,
+        phone:req.body.phone,
+        email:req.body.email
+      }
+    }
+  }).then(()=>{
+    console.log("Update Success")
+  },(err)=>{
+    console.log(err.message);
+  })
 }
 
 async function insertAll(req,res){
@@ -66,5 +98,6 @@ module.exports = {
   getOne,
   updateOne,
   insertAll,
-  search
+  search,
+  createOne
 }

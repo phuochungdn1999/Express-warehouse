@@ -46,6 +46,7 @@ async function failIfDuplicated(condition) {
   const count = await getCount({ where: condition })
   if (count > 0) throw new ConflictedError('Duplicated')
 }
+
 async function insertAll(){  
   const product = await Product.findAll({
     attributes: {

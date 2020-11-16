@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
 router.post('/', [auth, validateUser], async (req, res) => {
   return await service.createOne(req, res)
 })
+
 router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })

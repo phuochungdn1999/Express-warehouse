@@ -1,6 +1,7 @@
 const repository = require('../repository')
 const { Product } = require('../../../common/models/Product')
 const { Category } = require('../../../common/models/Category')
+const sequelize = require('../../../database/connection')
 
 const pagination = require('../../../common/helpers/pagination')
 const { NotFoundError } = require('../../../common/errors/http-errors')
@@ -65,5 +66,6 @@ module.exports = {
   getOne,
   getOneByIdOrFail,
   getProductsByCategory,
-  updateOne
+  updateOne,
+  createOne
 }
