@@ -1,5 +1,6 @@
 const repository = require('../repository')
 const { Product } = require('../../../common/models/Product')
+const { Category } = require('../../../common/models/Category')
 
 const pagination = require('../../../common/helpers/pagination')
 const { NotFoundError } = require('../../../common/errors/http-errors')
@@ -52,9 +53,17 @@ async function getProductsByCategory(req, res) {
   return res.status(200).json({ data: category })
 }
 
+async function updateOne(req, res) {
+  
+
+  await Category.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
+
 module.exports = {
   getAll,
   getOne,
   getOneByIdOrFail,
-  getProductsByCategory
+  getProductsByCategory,
+  updateOne
 }

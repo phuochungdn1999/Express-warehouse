@@ -1,5 +1,6 @@
 const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
+const { User } = require('../../../common/models/User')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -23,7 +24,14 @@ async function getOne(req, res) {
     .json({ data: user })
 }
 
+async function updateOne(req, res) {
+ 
+  await User.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
+
 module.exports = {
   getAll,
-  getOne
+  getOne,
+  updateOne
 }
