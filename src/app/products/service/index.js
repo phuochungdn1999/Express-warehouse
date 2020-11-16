@@ -7,6 +7,7 @@ const { HistoryType } = require('../../../common/models/HistoryType')
 const { UserWarehouse } = require('../../../common/models/UserWarehouse')
 const { Category } = require('../../../common/models/Category')
 const { NotFoundError, ForbiddenError, BadRequestError } = require('../../../common/errors/http-errors')
+const client = require("../../../database/esConnection")
 
 const warehouseRepository = require('../../warehouses/repository')
 const categoryRepository = require('../../categories/repository')
@@ -128,7 +129,23 @@ async function updateOne(req, res) {
   if (req.body.categoryId) await categoryRepository.getOneByIdOrFail(req.body.categoryId)
 
   await Product.update(req.body, { where: { id: req.params.id } })
+  await updateToEs(req);
   return res.json({ status: 200 })
+}
+async function updateToEs(req){
+  client.update({
+    index:"products",
+    id:req.params.id,
+    body:{
+      doc:{
+        name:req.body.name
+      }
+    }
+  }).then(()=>{
+    console.log("Update Success")
+  },(err)=>{
+    console.log(err.message);
+  })
 }
 
 // SUPPORTER METHODS
@@ -203,10 +220,32 @@ async function createWarehouseHistory(actionType, warehouseId, note) {
   return await History.create({typeId: type.id, warehouseId, note})
 }
 
+async function insertAll(req,res){
+  const message = await repository.insertAll();
+  return res
+      .status(200)
+      .json({ statusCode: 200 ,message:message})
+}
+async function search(req,res){
+  let body = {
+    size: 100,
+    from: 0, 
+    query: {      
+      wildcard: {
+          name: `*${req.params.productName.toLocaleLowerCase()}*`
+      }
+    }
+  }
+  const data = await repository.search(body);
+  return res.status(200).json({data})
+}
+
 module.exports = {
   getAll,
   getOne,
   getProductInWarehouse,
   createOne,
   updateOne,
+  insertAll,
+  search
 }

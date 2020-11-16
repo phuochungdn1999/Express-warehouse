@@ -29,4 +29,12 @@ router.patch('/:id', [auth, validateProduct], async (req, res) => {
   return await service.updateOne(req, res)
 })
 
+router.post('/insertProducts',async (req, res) => {
+  return await service.insertAll(req,res)
+})
+
+router.get('/search/:productName',[auth],async (req, res)=>{
+  return await service.search(req,res)
+})
+
 module.exports = router
