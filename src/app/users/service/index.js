@@ -30,8 +30,41 @@ async function updateOne(req, res) {
   return res.json({ status: 200 })
 }
 
+async function insertAll(req,res){
+  const message = await repository.insertAll();
+  return res
+      .status(200)
+      .json({ statusCode: 200 ,message:message})
+}
+async function search(req,res){
+  let body = {
+    size: req.query.size||100,
+    from: 0, 
+    query: {
+      bool:{
+        should:[
+          {
+            query_string: {
+            fields: ["name", "phone"],
+            query: `*${req.params.text.toLocaleLowerCase()}*`
+          }},
+          {
+            match_phrase_prefix : {
+              email: `*${req.params.text.toLocaleLowerCase()}*`
+          }
+          }
+        ]
+      }
+      
+    }
+  }
+  const data = await repository.search(body);
+  return res.status(200).json({data})
+}
 module.exports = {
   getAll,
   getOne,
-  updateOne
+  updateOne,
+  insertAll,
+  search
 }

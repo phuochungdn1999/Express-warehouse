@@ -1,6 +1,7 @@
 const { NotFoundError } = require("../../../common/errors/http-errors")
 const { Product } = require("../../../common/models/Product")
 const client = require("../../../database/esConnection")
+
 async function getCount(options) {
   const itemCount = await Product.count(options)
   return itemCount
@@ -86,12 +87,15 @@ async function search(body) {
 }
 
 
+
+
 module.exports = {
   getCount, 
   getAll,
   getOne,
   getOneByName,
   getOneByIdOrFail,
+  failIfDuplicated,
   createOne,
   insertAll,
   search

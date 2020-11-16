@@ -228,7 +228,7 @@ async function insertAll(req,res){
 }
 async function search(req,res){
   let body = {
-    size: 100,
+    size: req.query.size||100,
     from: 0, 
     query: {      
       wildcard: {
