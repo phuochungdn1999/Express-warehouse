@@ -1,5 +1,7 @@
 const { User } = require("../../../common/models/User")
 const client = require("../../../database/esConnection")
+const { sendEmail } = require('../../../common/helpers/sendEmail')
+const {confirmEmailLink} = require('../../../common/helpers/confirmEmailLink')
 
 async function getCount(options) {
   const itemCount = await User.count(options)
@@ -35,9 +37,10 @@ async function getOneByIdOrFail(id, options) {
 }
 
 async function createOne(body, options) {
-  await failIfDuplicated({ name: body.name ,phone:body.phone,email:body.email})
+  await failIfDuplicated({phone:body.phone,email:body.email})
 
   const user =  await User.create(body, options)
+  await sendEmail(body.email,await confirmEmailLink(user.id))
   await insertOneToEs(user)
   return user;
 }

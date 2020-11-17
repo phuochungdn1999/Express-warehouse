@@ -3,6 +3,7 @@ const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const sequelize = require('../../../database/connection')
 
+
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
   const options = pagination(req.query, itemCount)
