@@ -2,6 +2,8 @@ require('express-async-errors')
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const swaggerUi = require('swagger-ui-express')
+
 const users = require('./users/controller')
 const warehouses = require('./warehouses/controller')
 const permissions = require('./permissions/controller')
@@ -12,7 +14,7 @@ const cities = require('./cities/controller')
 const auth = require('./auth/controller')
 const error = require('../common/middlewares/error-handler-middleware')
 const { PORT } = require('../common/environments')
-
+const {swaggerDocumentAuth}= require('../common/swagger/index')
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
 
@@ -27,6 +29,8 @@ app.use('/products', products)
 app.use('/histories', histories)
 app.use('/categories', categories)
 app.use('/cities', cities)
+app.use('/api-docs-auth', swaggerUi.serve, swaggerUi.setup(swaggerDocumentAuth));//swagger for auth
+
 
 app.use(error)
 

@@ -2,6 +2,7 @@ const { User } = require("../../../common/models/User")
 const client = require("../../../database/esConnection")
 const { sendEmail } = require('../../../common/helpers/sendEmail')
 const {confirmEmailLink} = require('../../../common/helpers/confirmEmailLink')
+const { ConflictedError } = require("../../../common/errors/http-errors")
 
 async function getCount(options) {
   const itemCount = await User.count(options)
