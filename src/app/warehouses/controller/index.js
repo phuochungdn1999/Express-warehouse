@@ -38,5 +38,9 @@ router.patch('/:id', [auth, validateWarehouse], async (req, res) => {
   return await service.updateOne(req, res)
 })
 
+router.get('/chief/:id', [auth], async (req, res) => {
+  return await service.getChiefUserOfWarehouse(req.params.id)
+})
+
 
 module.exports = router

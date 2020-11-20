@@ -43,6 +43,7 @@ async function getOneWithUsers(req, res) {
 }
 
 async function getChiefUserOfWarehouse(id) {
+  
   const warehouse = await repository.getOne(id, {
     include: {
       model: User,
@@ -53,10 +54,11 @@ async function getChiefUserOfWarehouse(id) {
         model: Permission,
         as: 'permissions',
         through: { attributes: [] },
-        where: { permissionName: 'CHIEF' }
+        where: { permissionName: 'CHIEF_EMPLOYEE' }
       }
     }
   })
+  //console.log(warehouse.users)
   return warehouse.users
 }
 
@@ -122,5 +124,6 @@ module.exports = {
   getWarehouseByUserId,
   createOne,
   applyUserToWarehouse,
-  updateOne
+  updateOne,
+  getChiefUserOfWarehouse
 }

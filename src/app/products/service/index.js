@@ -5,11 +5,15 @@ const { Product } = require('../../../common/models/Product')
 const { History } = require('../../../common/models/History')
 const { HistoryType } = require('../../../common/models/HistoryType')
 const { UserWarehouse } = require('../../../common/models/UserWarehouse')
+const { WarehouseProduct } = require('../../../common/models/WarehouseProduct')
 const { Category } = require('../../../common/models/Category')
 const { NotFoundError, ForbiddenError, BadRequestError } = require('../../../common/errors/http-errors')
 const client = require("../../../database/esConnection")
-
+const {sendHistoryToEmail} = require('../../../common/helpers/sendHistory')
+const { sendEmail } = require('../../../common/helpers/sendEmail')
+const {getChiefUserOfWarehouse} = require('../../warehouses/service')
 const warehouseRepository = require('../../warehouses/repository')
+const userRepository = require('../../users/repository')
 const categoryRepository = require('../../categories/repository')
 const repository = require('../repository')
 
@@ -115,15 +119,29 @@ async function createOne(req, res) {
         const history = await 
           createWarehouseHistory(actionType, warehouse.id, `${actionType} amount ${req.body.stock}`)
         await createUserHistory(req, transaction, history, req.user.id)
+        
       }
     }
 
     await transaction.commit()
+    const warehouse = await warehouseRepository.getOne(req.body.products[0].warehouseId)
+    const chief = await getChiefUserOfWarehouse(req.body.products[0].warehouseId)
+    await sendHistory(chief,warehouse,req.body,req.user)
     return res
       .status(200)
       .json({ statusCode: 200 })
 }
+async function sendHistory(chief,warehouse,body,req){
+  console.log(chief.length)
+  console.log(warehouse)
+  console.log(body)
+  const employee = await userRepository.getOne (req.id)
+  console.log(employee)
 
+  for(var i=0;i<chief.length;i++){
+    await sendEmail( chief[i].email,await sendHistoryToEmail(chief[i],warehouse,body.products,employee))
+  }
+}
 async function updateOne(req, res) {
   await repository.getOneByIdOrFail(req.params.id)
   if (req.body.categoryId) await categoryRepository.getOneByIdOrFail(req.body.categoryId)

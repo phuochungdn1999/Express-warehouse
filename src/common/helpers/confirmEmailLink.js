@@ -1,7 +1,7 @@
 async function confirmEmailLink (user){
   console.log(user)
 
-  return `\n Welcome to Warehouse Management \n Hello ${user.name}`;
+  return `<p> Welcome to Warehouse Management </p> <p>Hello ${user.name}</p>`;
 };
 
 module.exports = {
