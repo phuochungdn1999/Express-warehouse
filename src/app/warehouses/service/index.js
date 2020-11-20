@@ -1,6 +1,7 @@
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const { Warehouse } = require('../../../common/models/Warehouse')
+const { Permission } = require('../../../common/models/Permission')
 
 const repository = require('../repository')
 const userRepository = require('../../users/repository')
@@ -39,6 +40,24 @@ async function getOneWithUsers(req, res) {
   })
   
   return res.status(200).json({ data: warehouse })
+}
+
+async function getChiefUserOfWarehouse(id) {
+  const warehouse = await repository.getOne(id, {
+    include: {
+      model: User,
+      as: 'users',
+      attributes: { exclude: ['password'] },
+      through: { attributes: [] },
+      include: {
+        model: Permission,
+        as: 'permissions',
+        through: { attributes: [] },
+        where: { permissionName: 'CHIEF' }
+      }
+    }
+  })
+  return warehouse.users
 }
 
 async function getWarehouseByUserId(req, res) {
