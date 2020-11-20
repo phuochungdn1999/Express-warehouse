@@ -19,7 +19,7 @@ async function sendEmail (email, link) {
       to: email, // list of receivers
       subject: 'Hello ✔', // Subject line
       text: 'Hello world?', // plain text body
-      html: `<b>Hello world?</b> <a href="${link}">confirm Email</a>`, // html body
+      html: `<b>Hello world?</b><h1>${link}</h1> `, // html body
     });
   
     console.log('Message sent: %s', info.messageId);

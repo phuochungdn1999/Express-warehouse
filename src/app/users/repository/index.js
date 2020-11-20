@@ -41,7 +41,7 @@ async function createOne(body, options) {
   await failIfDuplicated({phone:body.phone,email:body.email})
 
   const user =  await User.create(body, options)
-  await sendEmail(body.email,await confirmEmailLink(user.id))
+  await sendEmail(body.email,await confirmEmailLink(user))
   await insertOneToEs(user)
   return user;
 }
