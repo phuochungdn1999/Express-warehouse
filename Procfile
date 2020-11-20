@@ -1,1 +1,1 @@
-web: npm run start:dev
+web: node src/app/index.js
