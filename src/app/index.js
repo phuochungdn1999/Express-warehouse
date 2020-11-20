@@ -34,6 +34,6 @@ app.use('/api-docs-auth', swaggerUi.serve, swaggerUi.setup(swaggerDocumentAuth))
 
 app.use(error)
 
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
   console.log(`Listening on port ${PORT}`)
 })
