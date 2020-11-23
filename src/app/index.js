@@ -17,6 +17,7 @@ const { PORT } = require('../common/environments')
 const {swaggerDocumentAuth}= require('../common/swagger/index')
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
+// require('../database/db-sync')()
 
 app.use(express.json())
 app.use(morgan('dev'))
