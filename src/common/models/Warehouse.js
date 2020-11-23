@@ -21,13 +21,12 @@ const Warehouse = sequelize.define('Warehouse', {
   },
   description: {
     type: DataTypes.STRING(255),
+  },
+  image: {
+    type: DataTypes.STRING(1024),
+    allowNull: false,
+    defaultValue: 'https://image.flaticon.com/icons/png/512/407/407826.png'
   }
-  // ,
-  // image: {
-  //   type: DataTypes.STRING(1024),
-  //   allowNull: false,
-  //   defaultValue: 'https://image.flaticon.com/icons/png/512/407/407826.png'
-  // }
 }, {
   tableName: 'warehouses'
 })

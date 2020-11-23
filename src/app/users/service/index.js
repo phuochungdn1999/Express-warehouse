@@ -2,6 +2,7 @@ const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const sequelize = require('../../../database/connection')
+const client = require("../../../database/esConnection")
 
 
 async function getAll(req, res) {

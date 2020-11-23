@@ -2,6 +2,7 @@ const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const { Warehouse } = require('../../../common/models/Warehouse')
 const { Permission } = require('../../../common/models/Permission')
+const sequelize = require('../../../database/connection')
 
 const repository = require('../repository')
 const userRepository = require('../../users/repository')

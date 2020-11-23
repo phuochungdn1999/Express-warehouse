@@ -6,7 +6,7 @@ const {auth} = require('../../../common/middlewares/auth')
 
 router.get('/', async (req, res) => {
   return await service.getAll(req, res)
-})
+})//done
 
 /* get warehouse by userId */
 router.get('/user', [auth], async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/user', [auth], async (req, res) => {
 
 router.get('/:id', [auth], async (req, res) => {
   return await service.getOne(req, res)
-})
+})//done
 
 /* get warehouse by id with list users */
 router.get('/:id/users', [auth], async (req, res) => {
@@ -32,11 +32,11 @@ router.post('/user', [
 
 router.post('/', [validateWarehouse], async (req, res) => {
   return await service.createOne(req, res)
-})
+})//done
 
 router.patch('/:id', [auth, validateWarehouse], async (req, res) => {
   return await service.updateOne(req, res)
-})
+})//done
 
 router.get('/chief/:id', [auth], async (req, res) => {
   return await service.getChiefUserOfWarehouse(req.params.id)

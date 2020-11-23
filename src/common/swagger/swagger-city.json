@@ -1,0 +1,313 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My User Project CRUD",
+        "description": "My User Project Application API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "paths": {
+        "/cities": {
+            "get": {
+                "tags": ["Cities"],
+                "summary": "Get all cities in system",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }, {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }, {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cities"
+                        }
+                    }
+
+                }
+            },
+            "post": {
+                "tags": ["Cities"],
+                "summary": "Create new city in system",
+                "description": "Create new city in system",
+                "parameters": [
+                    {
+                        "name": "city",
+                        "in": "body",
+                        "description": "City that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/AddCity"
+                        }
+                    }, {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New user is created",
+                        "schema": {
+                            "$ref": "#/definitions/City"
+                        }
+                    },
+                    "400": {
+                        "description": "Cannot create city",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+        },
+        "/cities/{id}": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of city ",
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "tags": ["Cities"],
+                "summary": "Get city by ID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/City"
+                        }
+                    }
+
+                }
+            },"patch": {
+                "summary": "Update city with give ID, before call update, call api get user by id to display all",
+                "tags": ["Cities"],
+                "parameters": [
+                     {
+                        "name": "city",
+                        "in": "body",
+                        "description": "City with new values of properties",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateCity"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "City is updated",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateUser"
+                        }
+                    },
+                    "404": {
+                        "description": "City cannot be found",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+            },
+            
+        "/cities/warehouses/{id}": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of warehouse that we want to find product",
+                    "type": "string"
+                }, {
+                    "in": "query",
+                    "name": "page",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }, {
+                    "in": "query",
+                    "name": "limit",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }
+            ],
+            "get": {
+                "tags": ["Warehouses"],
+                "summary": "Get all warehouses by city ID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+
+                            "$ref": "#/definitions/Warehouses"
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    
+
+    },
+    "definitions": {"Warehouse": {
+        "required": [
+            "name", "id", "address", "cityId"
+        ],
+        "properties": {
+
+            "id": {
+                "type": "integer"
+            },
+            "name": {
+                "type": "string"
+            },
+            "address": {
+                "type": "string"
+            },
+            "cityId": {
+                "type": "integer"
+            },
+            "description": {
+                "type": "string"
+            }
+
+        }
+    },
+    "Warehouses": {
+        "type": "array",
+        "$ref": "#/definitions/Warehouse"
+    },
+        "City": {
+        "required": [
+            "name", "id"
+        ],
+        "properties": {
+
+            "id": {
+                "type": "integer"
+            },
+            "name": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "image": {
+                "type": "string"
+            }
+
+        }
+    },
+        "Cities": {
+            "type": "array",
+            "$ref": "#/definitions/City"
+        },
+        "AddCity": {
+            "required": ["name"],
+            "properties": {
+
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+            }
+        },
+        "error400": {
+            "properties": {
+                "statusCode": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+
+            }
+        },"UpdateCity": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+
+}

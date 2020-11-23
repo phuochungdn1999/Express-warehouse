@@ -14,7 +14,7 @@ const cities = require('./cities/controller')
 const auth = require('./auth/controller')
 const error = require('../common/middlewares/error-handler-middleware')
 const { PORT } = require('../common/environments')
-const {swaggerDocumentAuth,swaggerDocumentProduct}= require('../common/swagger/index')
+const {swaggerDocumentAuth,swaggerDocumentProduct,swaggerDocumentUser,swaggerDocumentCity,swaggerDocumentCategory,swaggerDocumentWarehouse}= require('../common/swagger/index')
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
 // require('../database/db-sync')()
@@ -33,7 +33,10 @@ app.use('/cities', cities)
 
 app.use('/api-docs-auth', swaggerUi.serve, swaggerUi.setup(swaggerDocumentAuth));//swagger for auth
 app.use('/api-docs-product', swaggerUi.serve, swaggerUi.setup(swaggerDocumentProduct));//swagger for product
-
+app.use('/api-docs-user', swaggerUi.serve, swaggerUi.setup(swaggerDocumentUser));//swagger for user
+app.use('/api-docs-city', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCity));//swagger for city
+app.use('/api-docs-category', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCategory));//swagger for category
+app.use('/api-docs-warehouse', swaggerUi.serve, swaggerUi.setup(swaggerDocumentWarehouse));//swagger for category
 
 app.use(error)
 

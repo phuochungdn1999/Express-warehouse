@@ -1,8 +1,10 @@
 const { User } = require("../../../common/models/User")
+const { Warehouse } = require("../../../common/models/Warehouse")
 const client = require("../../../database/esConnection")
 const { sendEmail } = require('../../../common/helpers/sendEmail')
 const {confirmEmailLink} = require('../../../common/helpers/confirmEmailLink')
 const { ConflictedError } = require("../../../common/errors/http-errors")
+const bcrypt = require('bcrypt')
 
 async function getCount(options) {
   const itemCount = await User.count(options)
@@ -39,7 +41,7 @@ async function getOneByIdOrFail(id, options) {
 
 async function createOne(body, options) {
   await failIfDuplicated({phone:body.phone,email:body.email})
-
+  body.password = await bcrypt.hash(body.password, await bcrypt.genSalt())
   const user =  await User.create(body, options)
   await sendEmail(body.email,await confirmEmailLink(user))
   await insertOneToEs(user)

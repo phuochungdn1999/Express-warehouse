@@ -50,7 +50,7 @@ async function createOne(req, res) {
 
 async function updateOne(req, res) {
   
-  await Product.update(req.body, { where: { id: req.params.id } })
+  await City.update(req.body, { where: { id: req.params.id } })
   return res.json({ status: 200 })
 }
 

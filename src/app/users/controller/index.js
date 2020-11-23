@@ -5,11 +5,11 @@ const { auth } = require('../../../common/middlewares/auth')
 
 router.get('/', async (req, res) => {
   return await service.getAll(req, res)
-})
+})//done
 
-router.post('/', [auth, validateUser], async (req, res) => {
+router.post('/', [ validateUser], async (req, res) => {
   return await service.createOne(req, res)
-})
+})//done
 
 router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
