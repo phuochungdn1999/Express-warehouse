@@ -12,4 +12,5 @@ module.exports = {
   HEROKU_MYSQL: process.env.HEROKU_MYSQL,
   CHIP: process.env.CHIP,
   BONSAI_URL: process.env.BONSAI_URL,
+  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
 }

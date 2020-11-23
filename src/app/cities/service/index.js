@@ -1,6 +1,7 @@
 const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const sequelize = require('../../../database/connection')
+const { City } = require('../../../common/models/City')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -47,10 +48,16 @@ async function createOne(req, res) {
     })
 }
 
+async function updateOne(req, res) {
+  
+  await City.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
 
 module.exports = {
   getAll,
   getOne,
   getWarehousesInCity,
-  createOne
+  createOne,
+  updateOne
 }

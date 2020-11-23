@@ -1,0 +1,378 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My User Project CRUD",
+        "description": "My User Project Application API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "paths": {
+        "/warehouses": {
+            "get": {
+                "tags": ["Warehouses"],
+                "summary": "Get all warehouses in system",
+                "parameters": [{
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }, {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Warehouses"
+                        }
+                    }
+
+                }
+            },
+            "post": {
+                "tags": ["Warehouses"],
+                "summary": "Create new warehouse in system",
+                "description": "Create new warehouse in system",
+                "parameters": [
+                    {
+                        "name": "warehouse",
+                        "in": "body",
+                        "description": "Warehouse that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/AddWarehouse"
+                        }
+                    }, {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New user is created",
+                        "schema": {
+                            "$ref": "#/definitions/Warehouse"
+                        }
+                    },
+                    "400": {
+                        "description": "Cannot create warehouse",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+
+        },"/warehouses/{id}": {
+            "parameters": [{
+                "in": "header",
+                "name": "Authorization",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                }
+            },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of warehouse that we want",
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "tags": ["Warehouses"],
+                "summary": "Get warehouse by ID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Warehouse"
+                        }
+                    }
+
+                }
+            },"patch": {
+                "summary": "Update warehouse with give ID, before call update, call api get warehouse by id to display all",
+                "tags": ["Warehouses"],
+                "parameters": [
+                     {
+                        "name": "warehouse",
+                        "in": "body",
+                        "description": "City with new values of properties",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateWarehouse"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Warehosue is updated",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateWarehouse"
+                        }
+                    },
+                    "404": {
+                        "description": "Warehouse cannot be found",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+        },"/warehouses/{id}/users": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of warehouse that we want to find users",
+                    "type": "string"
+                }, {
+                    "in": "query",
+                    "name": "page",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }, {
+                    "in": "query",
+                    "name": "limit",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }
+            ],
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get all users by warehouse ID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+
+                }
+            }
+
+        },"/warehouses/user": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }
+            ],
+            "post": {
+                "tags": ["Users"],
+                "summary": "Add new user to warehouse in system",
+                "description": "Add new user to warehouse",
+                "parameters": [
+                    {
+                        "name": "warehouse",
+                        "in": "body",
+                        "description": "Add new user to warehouse",
+                        "schema": {
+                            "$ref": "#/definitions/AddUser"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Cannot create warehouse",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+        }
+
+    
+        
+
+    },
+    "definitions": {
+        "Warehouse": {
+            "required": [
+                "name", "id", "address", "cityId"
+            ],
+            "properties": {
+
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "image":
+                {
+                    "type": "string"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                }
+
+            }
+        },
+        "Warehouses": {
+            "type": "array",
+            "$ref": "#/definitions/Warehouse"
+        },"UpdateWarehouse": {
+            
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "image":
+                {
+                    "type": "string"
+                },"description":{"type":"string"}
+            }
+        },
+        "AddWarehouse": {
+            "required": [
+                "name", "cityId", "address"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "image":{"type": "string"},
+                "description": {
+                    "type": "string"
+                }
+            }
+        },"User": {
+            "required": [
+                "name", "id", "email", "phone"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+
+            }
+        },"AddUser": {
+            "required": [
+                "userId", "warehouseId"
+            ],
+            "properties": {
+                "userId": {
+                    "type": "string"
+                },
+                "warehouseId": {
+                    "type": "string"
+                }
+            }
+        },
+
+        "error400": {
+            "properties": {
+                "statusCode": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+
+            }
+        }
+
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+
+}

@@ -2,6 +2,8 @@ require('express-async-errors')
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const swaggerUi = require('swagger-ui-express')
+
 const users = require('./users/controller')
 const warehouses = require('./warehouses/controller')
 const permissions = require('./permissions/controller')
@@ -12,9 +14,10 @@ const cities = require('./cities/controller')
 const auth = require('./auth/controller')
 const error = require('../common/middlewares/error-handler-middleware')
 const { PORT } = require('../common/environments')
-
+const {swaggerDocumentAuth,swaggerDocumentProduct,swaggerDocumentUser,swaggerDocumentCity,swaggerDocumentCategory,swaggerDocumentWarehouse}= require('../common/swagger/index')
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
+// require('../database/db-sync')()
 
 app.use(express.json())
 app.use(morgan('dev'))
@@ -28,8 +31,15 @@ app.use('/histories', histories)
 app.use('/categories', categories)
 app.use('/cities', cities)
 
+app.use('/api-docs-auth', swaggerUi.serve, swaggerUi.setup(swaggerDocumentAuth));//swagger for auth
+app.use('/api-docs-product', swaggerUi.serve, swaggerUi.setup(swaggerDocumentProduct));//swagger for product
+app.use('/api-docs-user', swaggerUi.serve, swaggerUi.setup(swaggerDocumentUser));//swagger for user
+app.use('/api-docs-city', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCity));//swagger for city
+app.use('/api-docs-category', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCategory));//swagger for category
+app.use('/api-docs-warehouse', swaggerUi.serve, swaggerUi.setup(swaggerDocumentWarehouse));//swagger for category
+
 app.use(error)
 
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
   console.log(`Listening on port ${PORT}`)
 })
