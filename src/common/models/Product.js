@@ -18,6 +18,11 @@ const Product = sequelize.define('Product', {
   note: {
     type: DataTypes.STRING(255),
   },
+  image: {
+    type: DataTypes.STRING(1024),
+    allowNull: false,
+    defaultValue: 'https://i.pinimg.com/originals/0d/ed/76/0ded765283f158b5d59ba57e081eab36.png'
+  }
 }, {
   tableName: 'products'
 })
@@ -32,7 +37,8 @@ function validateProduct(req, res, next) {
     name: Joi.string().max(255),
     note: Joi.string().max(255).optional(),
     stock: Joi.number(),
-    actionType: Joi.string().valid('IMPORT', 'EXPORT')
+    actionType: Joi.string().valid('IMPORT', 'EXPORT'),
+    image: Joi.string().max(1024).optional(),
   })
   // seek for error
   const { error } = schema.validate(req.body, {
@@ -53,8 +59,9 @@ function validateManagingProduct(req, res, next) {
         name: Joi.string().max(255),
         note: Joi.string().max(255).optional(),
         stock: Joi.number(),
-        actionType: Joi.string().valid('IMPORT', 'EXPORT')
-      })
+        actionType: Joi.string().valid('IMPORT', 'EXPORT'),
+        image: Joi.string().max(1024).optional(),
+  })
     )
   })
   // seek for error

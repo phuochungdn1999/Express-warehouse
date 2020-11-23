@@ -16,6 +16,11 @@ const Category = sequelize.define('Category', {
   description: {
     type: DataTypes.STRING(255),
   },
+  image: {
+    type: DataTypes.STRING(1024),
+    allowNull: false,
+    defaultValue: 'https://store.webkul.com/media/catalog/product/cache/1/thumbnail/250x250/9df78eab33525d08d6e5fb8d27136e95/a/k/akeneo-category-image-and-description_3_.png'
+  }
 }, {
   tableName: 'categories'
 })
@@ -26,7 +31,8 @@ const Category = sequelize.define('Category', {
 function validateCategory(req, res, next) {
   const schema = Joi.object({
     name: Joi.string().max(255),
-    description: Joi.string().max(255).optional()
+    description: Joi.string().max(255).optional(),
+    image: Joi.string().max(1024).optional(),
   })
   // seek for error
   const { error } = schema.validate(req.body, {

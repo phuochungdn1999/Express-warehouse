@@ -22,6 +22,11 @@ const Warehouse = sequelize.define('Warehouse', {
   description: {
     type: DataTypes.STRING(255),
   },
+  image: {
+    type: DataTypes.STRING(1024),
+    allowNull: false,
+    defaultValue: 'https://image.flaticon.com/icons/png/512/407/407826.png'
+  }
 }, {
   tableName: 'warehouses'
 })
@@ -34,7 +39,8 @@ function validateWarehouse(req, res, next) {
     cityId: Joi.number(),
     name: Joi.string().max(255),
     address: Joi.string().max(255),
-    description: Joi.string().max(255).optional()
+    description: Joi.string().max(255).optional(),
+    image: Joi.string().max(1024).optional(),
   })
   // seek for error
   const { error } = schema.validate(req.body, {
