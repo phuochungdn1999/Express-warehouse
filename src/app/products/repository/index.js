@@ -1,5 +1,7 @@
 const { NotFoundError } = require("../../../common/errors/http-errors")
 const { Product } = require("../../../common/models/Product")
+const { Permission } = require("../../../common/models/Permission")
+const client = require("../../../database/esConnection")
 
 async function getCount(options) {
   const itemCount = await Product.count(options)
@@ -45,11 +47,57 @@ async function failIfDuplicated(condition) {
   if (count > 0) throw new ConflictedError('Duplicated')
 }
 
+async function insertAll(){  
+  const product = await Product.findAll({
+    attributes: {
+        exclude: ['createdAt', 'updatedAt', 'categoryId', 'note']
+    }
+})
+  let bulkBody = [];
+
+    product.forEach(item => {
+        bulkBody.push({
+            index: {
+                _index: "products",
+                _type: "_doc",
+                _id: item.id
+            }
+        });
+
+        bulkBody.push(item);
+
+    });  
+    client.bulk({index: 'products', body: bulkBody})
+    return "Insert elasticsearch success"
+}
+
+async function search(body) {
+  let results =await client.search({
+    index:'products',  body:body
+  })   
+
+  products = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name}))
+  console.log('o123',products)
+  //console.log("oke2",results.hits.hits)
+  return {
+    statusCode:200,
+    data:{products:products},
+    total:products.length>0?products.length:0
+  }
+  
+}
+
+
+
+
 module.exports = {
   getCount, 
   getAll,
   getOne,
   getOneByName,
   getOneByIdOrFail,
-  createOne
+  failIfDuplicated,
+  createOne,
+  insertAll,
+  search
 }

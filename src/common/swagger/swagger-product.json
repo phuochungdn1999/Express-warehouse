@@ -1,0 +1,566 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My User Project CRUD",
+        "description": "My User Project Application API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": ["localhost:3000"],
+    "paths": {
+        "/products": {
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get all product in system",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }, {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }, {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+
+                        }
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+
+                            "$ref": "#/definitions/Products"
+                        }
+                    }
+
+                }
+            },
+            "post": {
+                "tags": ["Products"],
+                "summary": "Import or Export product in system",
+                "description": "Import or Export product in system",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }, {
+                        "name": "product",
+                        "in": "body",
+                        "description": "product that we want to Import or Export",
+                        "schema": {
+                            "$ref": "#/definitions/AddProducts"
+                        }
+                    }, {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/AddProducts"
+                        }
+                    },
+                    "400": {
+                        "description": "Cannot create product",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
+            }
+
+        },
+        "/products/{id}": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of user that we want to find",
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get  product by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+
+                }
+            }
+
+        },
+        "/products/warehouse/{id}": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of warehouse that we want to find product",
+                    "type": "integer"
+                }, {
+                    "in": "query",
+                    "name": "page",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }, {
+                    "in": "query",
+                    "name": "limit",
+                    "schema": {
+                        "type": "string"
+
+                    }
+
+                }
+            ],
+            "get": {
+                "tags": ["Products"],
+                "summary": "Get all product by warehouseID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Product"
+                        }
+                    }
+
+                }
+            }
+
+        },
+        "patch": {
+            "summary": "Update product with give ID, before call update, call api get user by id to display all",
+            "tags": ["Products"],
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "product",
+                    "in": "body",
+                    "description": "Product with new values of properties",
+                    "schema": {
+                        "$ref": "#/definitions/UpdateProduct"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Product is updated"
+                },
+                "404": {
+                    "description": "Product  cannot be found",
+                    "schema": {
+                        "$ref": "#/definitions/error400"
+                    }
+                }
+            }
+        },
+        "/Products/search/{productName}": {
+            "parameters": [
+                {
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                }, {
+                    "name": "productName",
+                    "in": "path",
+                    "required": true,
+                    "description": "Name of product to search",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": ["Products"],
+                "summary": "Search products by name",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+
+                            "$ref": "#/definitions/SearchProduct"
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    },
+    "definitions": {
+        "Product": {
+            "required": [
+                "name", "id", "categoryId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "warehouse": {
+                    "$ref": "#/definitions/Warehouse"
+                }
+
+            }
+        },
+        "UpdateProduct": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+
+            }
+        },
+        "Products": {
+            "type": "array",
+            "$ref": "#/definitions/Product"
+        },
+        "ProductByWarehouse": {
+            "required": [
+                "name", "id", "categoryId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "WarehouseProduct": {
+                    "$ref": "#/definitions/WarehouseProduct"
+                }
+
+            }
+        },
+        "WarehouseProduct": {
+            "required": [
+                "id", "warehouseId", "productId", "stock"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "warehouseId": {
+                    "type": "integer"
+                },
+                "productId": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Warehouse": {
+            "required": [
+                "name", "id", "cityId", "address"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+
+            }
+        },
+        "AddProduct": {
+            "required": [
+                "name", "categoryId"
+            ],
+            "properties": {
+
+                "categoryId": {
+                    "type": "integer"
+                },
+
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "warehouseId": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "actionType": {
+                    "type": "string",
+                    "example": "IMPORT||EXPORT"
+                }
+
+            }
+        },
+        "AddProducts": {
+            "type": "object",
+            "properties": {
+
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "Products1"
+                            },
+                            "stock": {
+                                "type": "integer",
+                                "example": 123
+                            },
+                            "warehouseId": {
+                                "type": "integer",
+                                "example": 141
+                            },
+                            "image": {
+                                "type": "string"
+                            },
+                            "actionType": {
+                                "type": "string",
+                                "example": "IMPORT||EXPORT"
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        },
+        "Category": {
+            "required": [
+                "name", "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "products": {
+                    "$ref": "#/definitions/Products"
+                }
+
+            }
+
+        },
+        "Categories": {
+            "type": "array",
+            "$ref": "#/definitions/Category"
+        },
+        "AddCategory": {
+            "required": ["name"],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+
+            }
+
+        },
+        "ProductByCategory": {
+            "required": [
+                "name", "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "products": {
+                    "$ref": "#/definitions/ProductWarehouse"
+                }
+
+            }
+
+        },
+        "ProductWarehouse": {
+            "required": [
+                "name", "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+
+                "name": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                }
+
+            }
+        },
+        "error400": {
+            "properties": {
+                "statusCode": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+
+            }
+        },
+        "SearchProduct": {
+            "required": ["name"],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+
+            }
+        }
+
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+
+}

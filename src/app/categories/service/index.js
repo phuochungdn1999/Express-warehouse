@@ -1,4 +1,8 @@
 const repository = require('../repository')
+const { Product } = require('../../../common/models/Product')
+const { Category } = require('../../../common/models/Category')
+const sequelize = require('../../../database/connection')
+
 const pagination = require('../../../common/helpers/pagination')
 const { NotFoundError } = require('../../../common/errors/http-errors')
 
@@ -38,8 +42,30 @@ async function createOne(req,res){
     })
 }
 
+async function getProductsByCategory(req, res) {
+  const category = await repository.getOneByIdOrFail(req.params.id, {
+    include: {
+      model: Product,
+      as: 'products',
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    }
+  })
+  
+  return res.status(200).json({ data: category })
+}
+
+async function updateOne(req, res) {
+  
+
+  await Category.update(req.body, { where: { id: req.params.id } })
+  return res.json({ status: 200 })
+}
+
 module.exports = {
   getAll,
   getOne,
   getOneByIdOrFail,
+  getProductsByCategory,
+  updateOne,
+  createOne
 }
