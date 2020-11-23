@@ -1,5 +1,6 @@
 const { NotFoundError } = require("../../../common/errors/http-errors")
 const { Product } = require("../../../common/models/Product")
+const { Permission } = require("../../../common/models/Permission")
 const client = require("../../../database/esConnection")
 
 async function getCount(options) {
@@ -11,7 +12,6 @@ async function getAll(options) {
   const products = await Product.findAll({
     ...options
   })
-  console.log("rr",products[10])
   return {
     products
   }

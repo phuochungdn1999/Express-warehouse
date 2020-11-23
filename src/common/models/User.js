@@ -34,12 +34,13 @@ const User = sequelize.define('User', {
   },
   address: {
     type: DataTypes.STRING(255)
-  },
-  image: {
-    type: DataTypes.STRING(1024),
-    allowNull: false,
-    defaultValue: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU'
   }
+  // ,
+  // image: {
+  //   type: DataTypes.STRING(1024),
+  //   allowNull: false,
+  //   defaultValue: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU'
+  // }
 })
 
 /**
@@ -52,7 +53,7 @@ function validateUser(req, res, next) {
     email: Joi.string().email().max(255),
     password: Joi.string().max(50),
     address: Joi.string().max(255).optional(),
-    image: Joi.string().max(1024).optional(),
+    //image: Joi.string().max(1024).optional(),
   })
   // seek for error
   const { error } = schema.validate(req.body, {

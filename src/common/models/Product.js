@@ -17,12 +17,13 @@ const Product = sequelize.define('Product', {
   }, 
   note: {
     type: DataTypes.STRING(255),
-  },
-  image: {
-    type: DataTypes.STRING(1024),
-    allowNull: false,
-    defaultValue: 'https://i.pinimg.com/originals/0d/ed/76/0ded765283f158b5d59ba57e081eab36.png'
   }
+  // ,
+  // image: {
+  //   type: DataTypes.STRING(1024),
+  //   allowNull: false,
+  //   defaultValue: 'https://i.pinimg.com/originals/0d/ed/76/0ded765283f158b5d59ba57e081eab36.png'
+  // }
 }, {
   tableName: 'products'
 })
