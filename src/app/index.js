@@ -18,7 +18,10 @@ const {swaggerDocumentAuth,swaggerDocumentProduct,swaggerDocumentUser,swaggerDoc
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
 // require('../database/db-sync')()
-
+module.exports = function(app) {
+  app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+})
 app.use(express.json())
 app.use(morgan('dev'))
 
@@ -39,8 +42,7 @@ app.use('/api-docs-category', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCa
 app.use('/api-docs-warehouse', swaggerUi.serve, swaggerUi.setup(swaggerDocumentWarehouse));//swagger for category
 
 app.use(error)
-const host = '0.0.0.0';
-const port = process.env.PORT || 3000;
-app.listen(host,port, () => {
-  //console.log(`Listening on port ${port}`)
+app.listen(PORT || 3000, () => {
+  console.log(`Listening on port ${PORT}`)
 })
+
