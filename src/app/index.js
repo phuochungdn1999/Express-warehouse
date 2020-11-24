@@ -18,9 +18,8 @@ const {swaggerDocumentAuth,swaggerDocumentProduct,swaggerDocumentUser,swaggerDoc
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
 // require('../database/db-sync')()
-module.exports = function(app) {
-  app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
 })
 app.use(express.json())
 app.use(morgan('dev'))
