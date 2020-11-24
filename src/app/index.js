@@ -42,6 +42,6 @@ app.use('/api-docs-warehouse', swaggerUi.serve, swaggerUi.setup(swaggerDocumentW
 
 app.use(error)
 app.listen(PORT || 3000, () => {
-  console.log(`Listening on port ${PORT}`)
+  console.log(`Listening on port 3000`)
 })
 
