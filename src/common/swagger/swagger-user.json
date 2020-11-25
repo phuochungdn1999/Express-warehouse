@@ -9,7 +9,7 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "host": "localhost:3000",
+    "host": "managewarehouse.herokuapp.com",
     "paths": {
         "/users": {
             "get": {
@@ -322,7 +322,7 @@
             }
         }
     },
-    "schemes": ["http"],
+    "schemes": ["https"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "components": {
