@@ -50,7 +50,7 @@ async function failIfDuplicated(condition) {
 async function insertAll(){  
   const product = await Product.findAll({
     attributes: {
-        exclude: ['createdAt', 'updatedAt', 'categoryId', 'note']
+        exclude: ['createdAt', 'updatedAt', 'categoryId', 'note','image']
     }
 })
   let bulkBody = [];
@@ -58,7 +58,7 @@ async function insertAll(){
     product.forEach(item => {
         bulkBody.push({
             index: {
-                _index: "products",
+                _index: "product",
                 _type: "_doc",
                 _id: item.id
             }
@@ -67,13 +67,13 @@ async function insertAll(){
         bulkBody.push(item);
 
     });  
-    client.bulk({index: 'products', body: bulkBody})
+    client.bulk({index: 'product', body: bulkBody})
     return "Insert elasticsearch success"
 }
 
 async function search(body) {
   let results =await client.search({
-    index:'products',  body:body
+    index:'product',  body:body
   })   
 
   products = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name}))
