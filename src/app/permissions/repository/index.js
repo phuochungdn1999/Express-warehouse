@@ -29,6 +29,13 @@ async function getOne(id) {
   return permission
 }
 
+async function getOneByName(name) {
+  const permission = await Permission.findOne({ 
+    where: { permissionName: name },
+  })
+  return permission
+}
+
 async function createOne(body, options) {
   await failIfDuplicated({ permissionName: body.permissionName })
   return Permission.create(body, options)
@@ -43,5 +50,6 @@ module.exports = {
   getCount, 
   getAll,
   getOne,
+  getOneByName,
   createOne,
 }
