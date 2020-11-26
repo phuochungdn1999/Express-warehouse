@@ -93,8 +93,8 @@ async function search(body) {
   let results =await client.search({
     index:'user',  body:body
   })   
-
-  users = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name,phone:o._source.phone,email:o._source.email}))
+  console.log("asdas",results)
+  let users = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name,phone:o._source.phone,email:o._source.email}))
   console.log('o123',users)
   //console.log("oke2",results.hits.hits)
   return {

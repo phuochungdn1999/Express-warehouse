@@ -48,7 +48,7 @@ async function updateOne(req, res) {
 
 async function updateToEs(req){
   client.update({
-    index:"users",
+    index:"user",
     id:req.params.id,
     body:{
       doc:{

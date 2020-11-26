@@ -152,7 +152,7 @@ async function updateOne(req, res) {
 }
 async function updateToEs(req){
   client.update({
-    index:"products",
+    index:"product",
     id:req.params.id,
     body:{
       doc:{
