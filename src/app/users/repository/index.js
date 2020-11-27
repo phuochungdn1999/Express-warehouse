@@ -46,8 +46,8 @@ async function createOne(body, options) {
   })
   body.password = await bcrypt.hash(body.password, await bcrypt.genSalt())
   const user =  await User.create(body, options)
-  // await sendEmail(body.email,await confirmEmailLink(user))
-  // await insertOneToEs(user)
+  await sendEmail(body.email,await confirmEmailLink(user))
+  await insertOneToEs(user)
   return user;
 }
 
@@ -55,13 +55,13 @@ async function insertOneToEs(user){
   let bulkBody = [];
   bulkBody.push({
     index: {
-        _index: "user",
+        _index: "users",
         _type: "_doc",
         _id: user.id
     }
   });  
   bulkBody.push(user);
-  client.bulk({index: 'user', body: bulkBody})
+  client.bulk({index: 'users', body: bulkBody})
   return "Insert elasticsearch success"
 }
 
@@ -73,7 +73,7 @@ async function failIfDuplicated(condition) {
 async function insertAll(){  
   const user = await User.findAll({
     attributes: {
-        exclude: ['createdAt', 'updatedAt', 'address','password','image']
+        exclude: ['createdAt', 'updatedAt', 'address','password']
     }
   })
   let bulkBody = [];
@@ -81,20 +81,20 @@ async function insertAll(){
   user.forEach(item => {
     bulkBody.push({
         index: {
-            _index: "user",
+            _index: "users",
             _type: "_doc",
             _id: item.id
         }
     });
     bulkBody.push(item);
   });  
-  client.bulk({index: 'user', body: bulkBody})
+  client.bulk({index: 'users', body: bulkBody})
   return "Insert elasticsearch success"
 }
 
 async function search(body) {
   let results =await client.search({
-    index:'user',  body:body
+    index:'users',  body:body
   })   
 
   users = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name,phone:o._source.phone,email:o._source.email}))
