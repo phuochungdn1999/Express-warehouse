@@ -31,6 +31,11 @@ async function getOne(req, res) {
 
 async function createOne(req,res){
   const transaction = await sequelize.transaction()
+  const { phone, email } = req.body
+  
+  await repository.failIfDuplicated({ phone })
+  await repository.failIfDuplicated({ email })
+
   const user = await repository.createOne(req.body, { transaction: transaction })
   
   const permission = await permissionRepository.getOneByName("EMPLOYEE")
