@@ -27,7 +27,7 @@ async function getOne(id, options) {
 
 async function getOneByIdOrFail(id, options) {
   const warehouse = await Warehouse.findOne({ 
-    where: { id },
+    where: {id},
     ...options
   })
   if (!warehouse) throw new NotFoundError('Warehouse not found')

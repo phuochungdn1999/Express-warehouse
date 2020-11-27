@@ -1,9 +1,8 @@
 const { User } = require("../../../common/models/User")
-const { Warehouse } = require("../../../common/models/Warehouse")
 const client = require("../../../database/esConnection")
 const { sendEmail } = require('../../../common/helpers/sendEmail')
 const {confirmEmailLink} = require('../../../common/helpers/confirmEmailLink')
-const { ConflictedError } = require("../../../common/errors/http-errors")
+const { ConflictedError,NotFoundError } = require("../../../common/errors/http-errors")
 const bcrypt = require('bcrypt')
 
 async function getCount(options) {
@@ -31,12 +30,12 @@ async function getOne(id) {
 }
 
 async function getOneByIdOrFail(id, options) {
-  const warehouse = await Warehouse.findOne({ 
+  const user = await User.findOne({ 
     where: { id },
     ...options
   })
-  if (!warehouse) throw new NotFoundError('Warehouse not found')
-  return warehouse
+  if (!user) throw new NotFoundError('User not found')
+  return user
 }
 
 async function createOne(body, options) {

@@ -102,7 +102,6 @@ async function applyUserToWarehouse(req, res) {
   if (!warehouseId || !userId) {
     return res.status(400).json({ message: 'Missing warehouseId or userId' })
   }
-
   const warehouse = await repository.getOneByIdOrFail(warehouseId)
   await userRepository.getOneByIdOrFail(userId)
 
