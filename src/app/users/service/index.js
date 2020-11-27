@@ -1,4 +1,5 @@
 const repository = require('../repository')
+const permissionRepository = require('../../permissions/repository')
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const sequelize = require('../../../database/connection')
@@ -29,13 +30,28 @@ async function getOne(req, res) {
 
 async function createOne(req,res){
   const transaction = await sequelize.transaction()
-  const users = await repository.createOne(req.body,{transaction: transaction})
+  const { phone, email } = req.body
+  
+  await repository.failIfDuplicated({ phone })
+  await repository.failIfDuplicated({ email })
+
+  const user = await repository.createOne(req.body, { transaction: transaction })
+  
+  const permission = await permissionRepository.getOneByName("EMPLOYEE")
+  if (!permission) throw new NotFoundError(`Permission "EMPLOYEE" not found`)
+
+  try { await user.addPermission(permission.id, { transaction }) } 
+  catch (error) {
+    await transaction.rollback()
+    console.log(error.message)
+    throw new InternalServerError("Internal server error")
+  }
 
   await transaction.commit()
   return res
     .status(201)
     .json({
-      data: users
+      data: user
     })
 }
 
