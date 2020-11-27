@@ -149,30 +149,8 @@
                     }
                 }
             }
-        },"/warehouse/user": {
-            "parameters": [{
-                "in": "header",
-                "name": "Authorization",
-                "required": true,
-                "schema": {
-                    "type": "string",
-                    "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                }
-            }
-            ],
-            "get": {
-                "tags": ["User"],
-                "summary": "Get warehouse by user ID in system",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Warehouse"
-                        }
-                    }
-
-                }
-            }},"/warehouses/{id}/users": {
+        }
+            ,"/warehouses/{id}/users": {
             "parameters": [
                 {
                     "in": "header",
@@ -232,7 +210,19 @@
                         "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
                     }
                 }
-            ],
+            ],"get": {
+                "tags": ["User"],
+                "summary": "Get warehouse by user ID in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Warehouse"
+                        }
+                    }
+
+                }
+            },
             "post": {
                 "tags": ["Users"],
                 "summary": "Add new user to warehouse in system",
