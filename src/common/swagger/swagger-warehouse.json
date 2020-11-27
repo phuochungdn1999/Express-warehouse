@@ -172,7 +172,7 @@
                     }
 
                 }
-            },"/warehouses/{id}/users": {
+            }},"/warehouses/{id}/users": {
             "parameters": [
                 {
                     "in": "header",
@@ -398,4 +398,4 @@
         }
     }
 
-}}
+}
