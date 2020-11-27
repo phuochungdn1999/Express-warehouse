@@ -211,7 +211,7 @@
                     }
                 }
             ],"get": {
-                "tags": ["User"],
+                "tags": ["Users"],
                 "summary": "Get warehouse by user ID in system",
                 "responses": {
                     "200": {
