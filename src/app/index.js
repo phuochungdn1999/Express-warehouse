@@ -43,7 +43,12 @@ app.use('/api-docs-category', swaggerUi.serve, swaggerUi.setup(swaggerDocumentCa
 app.use('/api-docs-warehouse', swaggerUi.serve, swaggerUi.setup(swaggerDocumentWarehouse));//swagger for category
 
 app.use(error)
+<<<<<<< HEAD
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port 3000`)
+=======
+app.listen(PORT || 3000, () => {
+  console.log(`Listening on port ${PORT}`)
+>>>>>>> 2e1ef2c71f788b9dceba5457a43845fc5261e311
 })
 
