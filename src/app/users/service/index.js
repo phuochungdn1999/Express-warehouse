@@ -13,7 +13,7 @@ async function getAll(req, res) {
   const users = await repository.getAll(options)
   return res
     .status(200)
-    .json({ data: users })
+    .json({ data: users})
 }
 
 async function getOne(req, res) {
