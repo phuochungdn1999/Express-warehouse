@@ -13,4 +13,5 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })
 
+
 module.exports = router

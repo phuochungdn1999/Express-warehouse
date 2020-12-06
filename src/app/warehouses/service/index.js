@@ -2,6 +2,7 @@ const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
 const { Warehouse } = require('../../../common/models/Warehouse')
 const { Permission } = require('../../../common/models/Permission')
+const { City } = require('../../../common/models/City')
 const sequelize = require('../../../database/connection')
 
 const repository = require('../repository')
@@ -12,7 +13,12 @@ async function getAll(req, res) {
   const itemCount = await repository.getCount()
   const options = pagination(req.query, itemCount)
 
-  const warehouses = await repository.getAll(options)
+  const warehouses = await repository.getAll({
+    include: {
+      model: City,
+      as: 'city',
+      attributes: ['name']
+    }},options)
   return res
     .status(200)
     .json({ data: warehouses })
