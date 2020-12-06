@@ -13,15 +13,17 @@ async function getAll(req, res) {
   const itemCount = await repository.getCount()
   const options = pagination(req.query, itemCount)
 
-  const warehouses = await repository.getAll({
-    include: {
-      model: City,
-      as: 'city',
-      attributes: ['name']
-    }},options)
+  const warehouses = await repository.getAll(
+    {
+      include: [{
+        model: City,
+        as: 'city',
+        attributes: ['name'],
+      }],
+      ...options})
   return res
     .status(200)
-    .json({ data: warehouses })
+    .json({ data: warehouses ,...options})
 }
 
 async function getOne(req, res) {

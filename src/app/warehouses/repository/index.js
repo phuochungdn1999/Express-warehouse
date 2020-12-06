@@ -8,12 +8,10 @@ async function getCount(options) {
 
 async function getAll(options) {
   const warehouses = await Warehouse.findAll({
-    attributes: { exclude: ['createdAt', 'updatedAt'] },
     ...options
   })
   return {
-    warehouses,
-    ...options
+    warehouses
   }
 }
 
