@@ -13,4 +13,12 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })
 
+router.get('/warehouses/:id', async (req, res) => {
+  return await service.getWarehouseHistories(req, res)
+})
+
+router.get('/users/:id', async (req, res) => {
+  return await service.getUserHistories(req, res)
+})
+
 module.exports = router
