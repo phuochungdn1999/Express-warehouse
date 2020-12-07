@@ -5,6 +5,8 @@ module.exports = function(query, itemCount) {
 
   if (!query.limit || !query.page) {
     if (!query.limit) options.limit = 10
+    else options.limit = parseInt(query.limit, 10)
+    
     if (!query.page) { 
       options.offset = 0,
       query.page = 1

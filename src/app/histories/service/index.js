@@ -41,7 +41,7 @@ async function getWarehouseHistories(req, res) {
   const warehouse = await warehouseRepository.getOne(req.params.id)
   if (!warehouse) throw new NotFoundError('Warehouse not found')
 
-  const itemCount = await repository.getCount()
+  const itemCount = await repository.getCount({ where: { warehouseId: req.params.id } })
   let options = pagination(req.query, itemCount)
   options = {
     ...options,
@@ -62,7 +62,7 @@ async function getUserHistories(req, res) {
 
   const warehouseIds = await warehouses.map(user => ({ warehouseId: user.id }))
 
-  const itemCount = await repository.getCount()
+  const itemCount = await repository.getCount({ where: { [Op.or]: warehouseIds } })
   let options = pagination(req.query, itemCount)
   options = {
     ...options,

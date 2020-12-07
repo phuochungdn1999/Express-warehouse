@@ -1,8 +1,8 @@
 const { History } = require("../../../common/models/History")
 const { HistoryType } = require("../../../common/models/HistoryType")
 
-async function getCount() {
-  const itemCount = await History.count()
+async function getCount(options) {
+  const itemCount = await History.count(options)
   return itemCount
 }
 
