@@ -1,4 +1,4 @@
-const { pickBy, identity } = require('lodash')
+const { pickBy, identity, pick } = require('lodash')
 
 module.exports = function(query, itemCount) {
   let options = {}

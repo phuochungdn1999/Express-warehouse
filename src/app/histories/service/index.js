@@ -4,6 +4,7 @@ const warehouseRepository = require('../../warehouses/repository')
 const pagination = require('../../../common/helpers/pagination')
 const { Op } = require('sequelize')
 const { NotFoundError } = require('../../../common/errors/http-errors')
+const { User } = require('../../../common/models/User')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -45,7 +46,13 @@ async function getWarehouseHistories(req, res) {
   let options = pagination(req.query, itemCount)
   options = {
     ...options,
-    where: { warehouseId: req.params.id }
+    where: { warehouseId: req.params.id },
+    include: {
+      model: User,
+      as: 'users',
+      attributes: ['id', 'name'],
+      through: { attributes: [] }
+    }
   }
 
   const histories = await repository.getAll(options)
