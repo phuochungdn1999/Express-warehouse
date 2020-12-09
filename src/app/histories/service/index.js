@@ -6,6 +6,8 @@ const { Op } = require('sequelize')
 const { NotFoundError } = require('../../../common/errors/http-errors')
 const { User } = require('../../../common/models/User')
 const { Product } = require('../../../common/models/Product')
+const { Warehouse } = require('../../../common/models/Warehouse')
+const { HistoryType } = require('../../../common/models/HistoryType')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -61,13 +63,10 @@ async function getWarehouseHistories(req, res) {
         attributes: ['id', 'name', 'image'],
         through: { attributes: ['amount'] }
       }
+    ],
+    order: [
+      ['date', 'DESC']
     ]
-    // include: {
-    //   model: Product,
-    //   as: 'products',
-    //   attributes: ['id', 'name', 'image'],
-    //   through: { attributes: ['amount'] }
-    // }
   }
 
   const histories = await repository.getAll(options)
@@ -88,7 +87,28 @@ async function getUserHistories(req, res) {
   let options = pagination(req.query, itemCount)
   options = {
     ...options,
-    where: { [Op.or]: warehouseIds }
+    where: { [Op.or]: warehouseIds },
+    include: [
+      {
+        model: Warehouse,
+        as: 'warehouse',
+        attributes: ['name']
+      },
+      {
+        model: HistoryType,
+        as: 'type',
+        attributes: ['name']
+      },
+      {
+        model: Product,
+        as: 'products',
+        attributes: ['name', 'image'],
+        through: { attributes: [] }
+      }
+    ],
+    order: [
+      ['date', 'DESC']
+    ]
   }
 
   const histories = await repository.getAll(options)
