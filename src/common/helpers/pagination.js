@@ -5,6 +5,8 @@ module.exports = function(query, itemCount) {
 
   if (!query.limit || !query.page) {
     if (!query.limit) options.limit = 10
+    else options.limit = parseInt(query.limit, 10)
+    
     if (!query.page) { 
       options.offset = 0,
       query.page = 1
@@ -12,8 +14,9 @@ module.exports = function(query, itemCount) {
   }
   else {
     options.limit = parseInt(query.limit, 10)
-    options.offset = (parseInt(query.page, 10) - 1) * parseInt(query.limit, 10)
+    options.offset = (parseInt(query.page, 10) - 1) * parseInt(options.limit, 10)
   }
+  options.offset = (parseInt(query.page, 10) - 1) * parseInt(options.limit, 10)
   options.currentPage = parseInt(query.page, 10)
   options.pageCount = Math.ceil(itemCount/options.limit)
 

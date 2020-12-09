@@ -1,0 +1,3 @@
+const permissions = {
+  EMPLOYEE: 'EMPLOYEE'
+}

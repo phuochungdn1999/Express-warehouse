@@ -40,11 +40,14 @@ async function getOneByIdOrFail(id, options) {
 }
 
 async function createOne(body, options) {
-  await failIfDuplicated({phone:body.phone,email:body.email})
+  await failIfDuplicated({
+    phone: body.phone,
+    email: body.email
+  })
   body.password = await bcrypt.hash(body.password, await bcrypt.genSalt())
   const user =  await User.create(body, options)
-  await sendEmail(body.email,await confirmEmailLink(user))
-  await insertOneToEs(user)
+  // await sendEmail(body.email,await confirmEmailLink(user))
+  // await insertOneToEs(user)
   return user;
 }
 
@@ -95,8 +98,6 @@ async function search(body) {
   })   
 
   users = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name,phone:o._source.phone,email:o._source.email}))
-  console.log('o123',users)
-  //console.log("oke2",results.hits.hits)
   return {
     statusCode:200,
     data:{users:users},
