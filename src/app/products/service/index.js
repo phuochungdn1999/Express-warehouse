@@ -97,6 +97,9 @@ async function createOne(req, res) {
 
     let product = await repository.getOneByName(eachProduct.name)
     if (!product) {
+      /**
+       * FATAL ERROR HERE
+       */
       // if user want to export a product not exist, response
       if (actionType === 'EXPORT') 
         throw new BadRequestError('Product not found. Cannot export')
@@ -115,9 +118,13 @@ async function createOne(req, res) {
           updateStock(eachProduct.stock, transaction, warehouse, product, actionType)
         if (!warehProd) 
           throw new BadRequestError('Not enough stock to export')
+
+        console.log('warehProd:', warehProd)
+        console.log('eachProduct:', eachProduct)
+        console.log(`${actionType} amount ${eachProduct.stock}`)
         // done, create history, commit transaction & response
         const history = await 
-          createWarehouseHistory(actionType, warehouse.id, `${actionType} amount ${req.body.stock}`)
+          createWarehouseHistory(actionType, warehouse.id, `${actionType} amount ${eachProduct.stock}`)
         await createUserHistory(req, transaction, history, req.user.id)
         
       }
@@ -126,7 +133,7 @@ async function createOne(req, res) {
     await transaction.commit()
     const warehouse = await warehouseRepository.getOne(req.body.products[0].warehouseId)
     const chief = await getChiefUserOfWarehouse(req.body.products[0].warehouseId)
-    await sendHistory(chief,warehouse,req.body,req.user)
+    // await sendHistory(chief,warehouse,req.body,req.user)
     return res
       .status(200)
       .json({ statusCode: 200 })
