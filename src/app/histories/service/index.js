@@ -48,18 +48,26 @@ async function getWarehouseHistories(req, res) {
   options = {
     ...options,
     where: { warehouseId: req.params.id },
-    include: {
-      model: User,
-      as: 'users',
-      attributes: ['id', 'name'],
-      through: { attributes: [] }
-    },
-    include: {
-      model: Product,
-      as: 'products',
-      attributes: ['id', 'name', 'image'],
-      through: { attributes: ['amount'] }
-    }
+    include: [
+      {
+        model: User,
+        as: 'users',
+        attributes: ['id', 'name', 'email5'],
+        through: { attributes: [] }
+      },
+      {
+        model: Product,
+        as: 'products',
+        attributes: ['id', 'name', 'image'],
+        through: { attributes: ['amount'] }
+      }
+    ]
+    // include: {
+    //   model: Product,
+    //   as: 'products',
+    //   attributes: ['id', 'name', 'image'],
+    //   through: { attributes: ['amount'] }
+    // }
   }
 
   const histories = await repository.getAll(options)
