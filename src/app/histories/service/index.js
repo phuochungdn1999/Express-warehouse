@@ -52,7 +52,7 @@ async function getWarehouseHistories(req, res) {
       {
         model: User,
         as: 'users',
-        attributes: ['id', 'name', 'email5'],
+        attributes: ['id', 'name', 'email'],
         through: { attributes: [] }
       },
       {
