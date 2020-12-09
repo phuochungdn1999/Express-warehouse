@@ -5,6 +5,7 @@ const pagination = require('../../../common/helpers/pagination')
 const { Op } = require('sequelize')
 const { NotFoundError } = require('../../../common/errors/http-errors')
 const { User } = require('../../../common/models/User')
+const { Product } = require('../../../common/models/Product')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
@@ -52,6 +53,12 @@ async function getWarehouseHistories(req, res) {
       as: 'users',
       attributes: ['id', 'name'],
       through: { attributes: [] }
+    },
+    include: {
+      model: Product,
+      as: 'products',
+      attributes: ['id', 'name', 'image'],
+      through: { attributes: ['amount'] }
     }
   }
 
