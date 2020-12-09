@@ -118,15 +118,13 @@ async function createOne(req, res) {
           updateStock(eachProduct.stock, transaction, warehouse, product, actionType)
         if (!warehProd) 
           throw new BadRequestError('Not enough stock to export')
-
-        console.log('warehProd:', warehProd)
-        console.log('eachProduct:', eachProduct)
-        console.log(`${actionType} amount ${eachProduct.stock}`)
         // done, create history, commit transaction & response
         const history = await 
           createWarehouseHistory(actionType, warehouse.id, `${actionType} amount ${eachProduct.stock}`)
         await createUserHistory(req, transaction, history, req.user.id)
-        
+        // create product history
+        const currentProduct = await Product.findOne({ where: { name: eachProduct.name }})
+        await createProductHistory(req, transaction, history, currentProduct.id, eachProduct.stock)
       }
     }
 
@@ -238,6 +236,13 @@ async function updateStock(stock, transaction, warehouse, product, actionType) {
 
 async function createUserHistory(req, transaction, history, userId) {
   await history.addUser(userId, { transaction: transaction })
+}
+
+async function createProductHistory(req, transaction, history, productId, stock) {
+  await history.addProduct(productId, { 
+    transaction: transaction,
+    through: { amount: stock }
+  })
 }
 
 async function createWarehouseHistory(actionType, warehouseId, note) {
