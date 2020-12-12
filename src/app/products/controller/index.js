@@ -11,6 +11,10 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })//done
 
+
+router.get('/test/:name', async (req, res) => {
+  return await service.searchByName(req,res)
+})//done
 // get products by their warehouse
 router.get('/warehouse/:id', async (req, res) => {
   return await service.getProductInWarehouse(req, res)
