@@ -129,7 +129,6 @@ async function createOne(req, res) {
     }
 
     await transaction.commit()
-    const warehouse = await warehouseRepository.getOne(req.body.products[0].warehouseId)
     const chief = await getChiefUserOfWarehouse(req.body.products[0].warehouseId)
     sendHistory(chief,warehouse,req.body,req.user)
     return res
