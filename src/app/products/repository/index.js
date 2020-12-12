@@ -86,6 +86,16 @@ async function search(body) {
   
 }
 
+async function searchByName(body) {
+  let results =await client.search({
+    index:'product',  body:body
+  })   
+  return {
+    results
+  }
+  
+}
+
 
 
 
@@ -98,5 +108,6 @@ module.exports = {
   failIfDuplicated,
   createOne,
   insertAll,
-  search
+  search,
+  searchByName
 }

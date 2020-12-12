@@ -60,7 +60,7 @@ async function insertOneToEs(user){
     }
   });  
   bulkBody.push(user);
-  client.bulk({index: 'users', body: bulkBody})
+  client.bulk({index: 'user', body: bulkBody})
   return "Insert elasticsearch success"
 }
 
