@@ -29,6 +29,14 @@ async function getOne(id) {
   return user
 }
 
+async function getOneWithOptions(options) {
+  const user = await User.findOne({
+    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+    ...options
+  })
+  return user
+}
+
 async function getOneByIdOrFail(id, options) {
   const user = await User.findOne({ 
     where: { id },
@@ -119,5 +127,6 @@ module.exports = {
   insertAll,
   search,
   createOne,
-  failIfDuplicated
+  failIfDuplicated,
+  getOneWithOptions,
 }

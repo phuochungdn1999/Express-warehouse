@@ -2,13 +2,21 @@ const repository = require('../repository')
 const permissionRepository = require('../../permissions/repository')
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
+const { Permission } = require('../../../common/models/Permission')
 const sequelize = require('../../../database/connection')
 const client = require("../../../database/esConnection")
 
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
-  const options = pagination(req.query, itemCount)
+  let options = pagination(req.query, itemCount)
+  options = {
+    ...options,
+    include: {
+      model: Permission,
+      as: 'permissions',
+    },
+  }
 
   const users = await repository.getAll(options)
   return res
@@ -17,7 +25,9 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-  const user = await repository.getOne(req.params.id)
+  const user = await repository.getOneWithOptions({
+    where: { id: req.params.id }
+  })
   if (!user) {
     return res
       .status(404)
