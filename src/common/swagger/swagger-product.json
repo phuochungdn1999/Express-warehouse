@@ -131,6 +131,39 @@
                     }
 
                 }
+            },
+            "patch": {
+                "summary": "Update product with give ID, before call update, call api get user by id to display all",
+                "tags": ["Products"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                        }
+                    }, {
+                        "name": "product",
+                        "in": "body",
+                        "description": "Product with new values of properties",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product is updated"
+                    },
+                    "404": {
+                        "description": "Product  cannot be found",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
+                        }
+                    }
+                }
             }
 
         },
@@ -182,39 +215,6 @@
                 }
             }
 
-        },
-        "patch": {
-            "summary": "Update product with give ID, before call update, call api get user by id to display all",
-            "tags": ["Products"],
-            "parameters": [
-                {
-                    "in": "header",
-                    "name": "Authorization",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                    }
-                }, {
-                    "name": "product",
-                    "in": "body",
-                    "description": "Product with new values of properties",
-                    "schema": {
-                        "$ref": "#/definitions/UpdateProduct"
-                    }
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "Product is updated"
-                },
-                "404": {
-                    "description": "Product  cannot be found",
-                    "schema": {
-                        "$ref": "#/definitions/error400"
-                    }
-                }
-            }
         },
         "/Products/search/{productName}": {
             "parameters": [
