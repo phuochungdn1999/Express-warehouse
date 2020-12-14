@@ -95,7 +95,7 @@ async function createOne(req, res) {
     const warehouse = await warehouseRepository.getOne(warehouseId)
     if (!warehouse) throw new BadRequestError('Invalid warehouse')
 
-    let product = await repository.getOneByName(eachProduct.name)
+    let product = await searchByName(eachProduct.name)
     if (!product) {
       /**
        * FATAL ERROR HERE
@@ -123,7 +123,7 @@ async function createOne(req, res) {
           createWarehouseHistory(actionType, warehouse.id, `${actionType} amount ${eachProduct.stock}`)
         await createUserHistory(req, transaction, history, req.user.id)
         // create product history
-        const currentProduct = await Product.findOne({ where: { name: eachProduct.name }})
+        const currentProduct = await searchByName(eachProduct.name)
         await createProductHistory(req, transaction, history, currentProduct.id, eachProduct.stock)
       }
     }
@@ -131,17 +131,14 @@ async function createOne(req, res) {
     await transaction.commit()
     const warehouse = await warehouseRepository.getOne(req.body.products[0].warehouseId)
     const chief = await getChiefUserOfWarehouse(req.body.products[0].warehouseId)
-    // await sendHistory(chief,warehouse,req.body,req.user)
+    sendHistory(chief,warehouse,req.body,req.user)
     return res
       .status(200)
       .json({ statusCode: 200 })
 }
 async function sendHistory(chief,warehouse,body,req){
-  console.log(chief.length)
-  console.log(warehouse)
-  console.log(body)
+
   const employee = await userRepository.getOne (req.id)
-  console.log(employee)
 
   for(var i=0;i<chief.length;i++){
     await sendEmail( chief[i].email,await sendHistoryToEmail(chief[i],warehouse,body.products,employee))
@@ -157,7 +154,7 @@ async function updateOne(req, res) {
 }
 async function updateToEs(req){
   client.update({
-    index:"products",
+    index:"product",
     id:req.params.id,
     body:{
       doc:{
@@ -256,6 +253,23 @@ async function insertAll(req,res){
       .status(200)
       .json({ statusCode: 200 ,message:message})
 }
+
+async function searchByName(text){
+  let body = {
+    query: {      
+      match_phrase: {
+          name: text
+      }
+    }
+  }
+  const data = await repository.searchByName(body);
+  try { 
+    return data.results.hits.hits[0]._source;
+  }catch(e){
+    return null
+  }
+  
+}
 async function search(req,res){
   let body = {
     size: req.query.size||100,
@@ -277,5 +291,6 @@ module.exports = {
   createOne,
   updateOne,
   insertAll,
-  search
+  search,
+  searchByName
 }
