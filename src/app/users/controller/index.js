@@ -27,4 +27,8 @@ router.get('/search/:text',[auth],async (req, res)=>{
   return await service.search(req,res)
 })
 
+router.delete('/:id', [auth], async (req, res) => {
+  return await service.deleteOne(req, res)
+})
+
 module.exports = router
