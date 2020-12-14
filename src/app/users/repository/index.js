@@ -50,6 +50,12 @@ async function createOne(body, options) {
   return user;
 }
 
+async function deleteOne(id) {
+  const deleteCount = await User.destroy({ where: { id } })
+  if (deleteCount === 0) return false
+  return true
+}
+
 async function insertOneToEs(user){
   let bulkBody = [];
   bulkBody.push({

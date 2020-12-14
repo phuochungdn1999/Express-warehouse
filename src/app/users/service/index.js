@@ -111,11 +111,19 @@ async function search(req,res){
   const data = await repository.search(body);
   return res.status(200).json({data})
 }
+
+async function deleteOne(req, res) {
+  const user = await getOne(req, res)
+  const isDeleted = await repository.deleteOne(user.id)
+  if (!isDeleted) throw new InternalServerError("Failed to delete")
+}
+
 module.exports = {
   getAll,
   getOne,
   updateOne,
   insertAll,
   search,
-  createOne
+  createOne,
+  deleteOne,
 }
