@@ -18,7 +18,10 @@ router.get('/:id', [auth], async (req, res) => {
 })//done
 
 /* get warehouse by id with list users */
-router.get('/:id/users', [auth], async (req, res) => {
+router.get('/:id/users', [
+  auth,
+  checkAction(['VIEW_USER'])
+], async (req, res) => {
   return await service.getOneWithUsers(req, res)
 })//done
 
@@ -30,17 +33,24 @@ router.post('/user', [
   return await service.applyUserToWarehouse(req, res)
 })//done
 
-router.post('/', [validateWarehouse], async (req, res) => {
+router.post('/', [
+  auth, 
+  checkAction(['CREATE_WAREHOUSE']),
+  validateWarehouse
+], async (req, res) => {
   return await service.createOne(req, res)
 })//done
 
-router.patch('/:id', [auth, validateWarehouse], async (req, res) => {
+router.patch('/:id', [
+  auth, 
+  checkAction(['CREATE_WAREHOUSE']),
+  validateWarehouse
+], async (req, res) => {
   return await service.updateOne(req, res)
 })//done
 
 router.get('/chief/:id', [auth], async (req, res) => {
   return await service.getChiefUserOfWarehouse(req.params.id)
 })
-
 
 module.exports = router
