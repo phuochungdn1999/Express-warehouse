@@ -32,12 +32,20 @@ async function getOne(req, res) {
 
 async function getOneWithUsers(req, res) {
   const warehouse = await repository.getOneByIdOrFail(req.params.id, {
-    include: {
-      model: User,
-      as: 'users',
-      attributes: { exclude: ['password'] },
-      through: { attributes: [] }
-    }
+    include: [
+      {
+        model: User,
+        as: 'users',
+        attributes: { exclude: ['password'] },
+        through: { attributes: [] },
+        include: {
+          model: Permission,
+          as: 'permissions',
+          attributes: ['permissionName'],
+          through: { attributes: [] },
+        }
+      }
+    ]
   })
   
   return res.status(200).json({ data: warehouse })

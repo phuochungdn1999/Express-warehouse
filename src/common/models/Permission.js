@@ -30,11 +30,7 @@ function validatePermission(req, res, next) {
     abortEarly: false
   })
   // response when having error
-  if (error) return res.status(400).json({ 
-    statusCode: 400,
-    message: error.message
-  })
-  else next() // no errors
+  if (error) throw new BadRequestError(error.message)
 }
 
 module.exports = {

@@ -1,13 +1,23 @@
-const repository = require('../repository')
 const pagination = require('../../../common/helpers/pagination')
 const { User } = require('../../../common/models/User')
+const { Permission } = require('../../../common/models/Permission')
 const sequelize = require('../../../database/connection')
 const client = require("../../../database/esConnection")
 
+const repository = require('../repository')
+const permissionRepository = require('../../permissions/repository')
+const { NotFoundError, InternalServerError } = require('../../../common/errors/http-errors')
 
 async function getAll(req, res) {
   const itemCount = await repository.getCount()
-  const options = pagination(req.query, itemCount)
+  let options = pagination(req.query, itemCount)
+  options = {
+    ...options,
+    include: {
+      model: Permission,
+      as: 'permissions',
+    },
+  }
 
   const users = await repository.getAll(options)
   return res
@@ -16,7 +26,9 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-  const user = await repository.getOne(req.params.id)
+  const user = await repository.getOneWithOptions({
+    where: { id: req.params.id }
+  })
   if (!user) {
     return res
       .status(404)
@@ -29,13 +41,28 @@ async function getOne(req, res) {
 
 async function createOne(req,res){
   const transaction = await sequelize.transaction()
-  const users = await repository.createOne(req.body,{transaction: transaction})
+  const { phone, email } = req.body
+  
+  await repository.failIfDuplicated({ phone })
+  await repository.failIfDuplicated({ email })
+
+  const user = await repository.createOne(req.body, { transaction: transaction })
+  
+  const permission = await permissionRepository.getOneByName("EMPLOYEE")
+  if (!permission) throw new NotFoundError(`Permission "EMPLOYEE" not found`)
+
+  try { await user.addPermission(permission.id, { transaction }) } 
+  catch (error) {
+    await transaction.rollback()
+    console.log(error.message)
+    throw new InternalServerError("Internal server error")
+  }
 
   await transaction.commit()
   return res
     .status(201)
     .json({
-      data: users
+      data: user
     })
 }
 
@@ -95,11 +122,19 @@ async function search(req,res){
   const data = await repository.search(body);
   return res.status(200).json({data})
 }
+
+async function deleteOne(req, res) {
+  const user = await getOne(req, res)
+  const isDeleted = await repository.deleteOne(user.id)
+  if (!isDeleted) throw new InternalServerError("Failed to delete")
+}
+
 module.exports = {
   getAll,
   getOne,
   updateOne,
   insertAll,
   search,
-  createOne
+  createOne,
+  deleteOne,
 }

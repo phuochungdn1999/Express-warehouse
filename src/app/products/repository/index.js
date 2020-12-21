@@ -58,7 +58,7 @@ async function insertAll(){
     product.forEach(item => {
         bulkBody.push({
             index: {
-                _index: "products",
+                _index: "product",
                 _type: "_doc",
                 _id: item.id
             }
@@ -67,13 +67,13 @@ async function insertAll(){
         bulkBody.push(item);
 
     });  
-    client.bulk({index: 'products', body: bulkBody})
+    client.bulk({index: 'product', body: bulkBody})
     return "Insert elasticsearch success"
 }
 
 async function search(body) {
   let results =await client.search({
-    index:'products',  body:body
+    index:'product',  body:body
   })   
 
   products = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name}))
@@ -83,6 +83,16 @@ async function search(body) {
     statusCode:200,
     data:{products:products},
     total:products.length>0?products.length:0
+  }
+  
+}
+
+async function searchByName(body) {
+  let results =await client.search({
+    index:'product',  body:body
+  })   
+  return {
+    results
   }
   
 }
@@ -99,5 +109,6 @@ module.exports = {
   failIfDuplicated,
   createOne,
   insertAll,
-  search
+  search,
+  searchByName
 }

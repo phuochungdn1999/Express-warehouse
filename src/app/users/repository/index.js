@@ -30,6 +30,14 @@ async function getOne(id) {
   return user
 }
 
+async function getOneWithOptions(options) {
+  const user = await User.findOne({
+    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+    ...options
+  })
+  return user
+}
+
 async function getOneByIdOrFail(id, options) {
   const warehouse = await Warehouse.findOne({ 
     where: { id },
@@ -40,25 +48,34 @@ async function getOneByIdOrFail(id, options) {
 }
 
 async function createOne(body, options) {
-  await failIfDuplicated({phone:body.phone,email:body.email})
+  await failIfDuplicated({
+    phone: body.phone,
+    email: body.email
+  })
   body.password = await bcrypt.hash(body.password, await bcrypt.genSalt())
   const user =  await User.create(body, options)
-  await sendEmail(body.email,await confirmEmailLink(user))
-  await insertOneToEs(user)
+  // await sendEmail(body.email,await confirmEmailLink(user))
+  // await insertOneToEs(user)
   return user;
+}
+
+async function deleteOne(id) {
+  const deleteCount = await User.destroy({ where: { id } })
+  if (deleteCount === 0) return false
+  return true
 }
 
 async function insertOneToEs(user){
   let bulkBody = [];
   bulkBody.push({
     index: {
-        _index: "users",
+        _index: "user",
         _type: "_doc",
         _id: user.id
     }
   });  
   bulkBody.push(user);
-  client.bulk({index: 'users', body: bulkBody})
+  client.bulk({index: 'user', body: bulkBody})
   return "Insert elasticsearch success"
 }
 
@@ -78,25 +95,23 @@ async function insertAll(){
   user.forEach(item => {
     bulkBody.push({
         index: {
-            _index: "users",
+            _index: "user",
             _type: "_doc",
             _id: item.id
         }
     });
     bulkBody.push(item);
   });  
-  client.bulk({index: 'users', body: bulkBody})
+  client.bulk({index: 'user', body: bulkBody})
   return "Insert elasticsearch success"
 }
 
 async function search(body) {
   let results =await client.search({
-    index:'users',  body:body
+    index:'user',  body:body
   })   
 
   users = results.hits.hits.map(o=>({id:o._source.id,name:o._source.name,phone:o._source.phone,email:o._source.email}))
-  console.log('o123',users)
-  //console.log("oke2",results.hits.hits)
   return {
     statusCode:200,
     data:{users:users},
@@ -113,5 +128,6 @@ module.exports = {
   insertAll,
   search,
   createOne,
-  failIfDuplicated
+  failIfDuplicated,
+  getOneWithOptions,
 }

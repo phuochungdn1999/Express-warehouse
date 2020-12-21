@@ -1,8 +1,9 @@
+const { pick } = require("lodash")
 const { History } = require("../../../common/models/History")
 const { HistoryType } = require("../../../common/models/HistoryType")
 
-async function getCount() {
-  const itemCount = await History.count()
+async function getCount(options) {
+  const itemCount = await History.count(options)
   return itemCount
 }
 
@@ -11,6 +12,7 @@ async function getAll(options) {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     ...options
   })
+  options = pick(options, ['limit', 'offset', 'currentPage', 'pageCount'])
   return {
     histories,
     ...options
@@ -30,6 +32,7 @@ async function getTypes(options) {
     attributes: { exclude: ['createdAt', 'updatedAt'] },
     ...options
   })
+  options = pick(options, ['limit', 'offset', 'currentPage', 'pageCount'])
   return types
 }
 
