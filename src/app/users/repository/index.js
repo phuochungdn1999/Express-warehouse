@@ -30,6 +30,14 @@ async function getOne(id) {
   return user
 }
 
+async function getOneWithOptions(options) {
+  const user = await User.findOne({
+    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+    ...options
+  })
+  return user
+}
+
 async function getOneByIdOrFail(id, options) {
   const warehouse = await Warehouse.findOne({ 
     where: { id },
@@ -49,6 +57,12 @@ async function createOne(body, options) {
   // await sendEmail(body.email,await confirmEmailLink(user))
   // await insertOneToEs(user)
   return user;
+}
+
+async function deleteOne(id) {
+  const deleteCount = await User.destroy({ where: { id } })
+  if (deleteCount === 0) return false
+  return true
 }
 
 async function insertOneToEs(user){
@@ -114,5 +128,6 @@ module.exports = {
   insertAll,
   search,
   createOne,
-  failIfDuplicated
+  failIfDuplicated,
+  getOneWithOptions,
 }

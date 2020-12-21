@@ -103,7 +103,7 @@ async function getUserHistories(req, res) {
         model: Product,
         as: 'products',
         attributes: ['name', 'image'],
-        through: { attributes: [] }
+        through: { attributes: ['amount'] }
       }
     ],
     order: [
