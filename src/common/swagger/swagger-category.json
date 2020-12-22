@@ -1,5 +1,5 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
         "title": "My User Project CRUD",
@@ -121,11 +121,12 @@
                     }
 
                 }
-            },"patch": {
+            },
+            "patch": {
                 "summary": "Update category with give ID, before call update, call api get user by id to display all",
                 "tags": ["categories"],
                 "parameters": [
-                     {
+                    {
                         "name": "category",
                         "in": "body",
                         "description": "category with new values of properties",
@@ -149,8 +150,8 @@
                     }
                 }
             }
-            },
-            
+        },
+
         "/categories/products/{id}": {
             "parameters": [
                 {
@@ -202,31 +203,29 @@
 
         }
 
-    
-
     },
     "definitions": {
         "category": {
-        "required": [
-            "name", "id"
-        ],
-        "properties": {
+            "required": [
+                "name", "id"
+            ],
+            "properties": {
 
-            "id": {
-                "type": "integer"
-            },
-            "name": {
-                "type": "string"
-            },
-            "description": {
-                "type": "string"
-            },
-            "image": {
-                "type": "string"
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+
             }
-
-        }
-    },
+        },
         "categories": {
             "type": "array",
             "$ref": "#/definitions/category"
@@ -256,10 +255,9 @@
                 }
 
             }
-        },"Updatecategory": {
-            "required": [
-                "name"
-            ],
+        },
+        "Updatecategory": {
+            "required": ["name"],
             "properties": {
                 "name": {
                     "type": "string"
@@ -271,7 +269,8 @@
                     "type": "string"
                 }
             }
-        },"Product": {
+        },
+        "Product": {
             "required": [
                 "name", "id", "categoryId"
             ],
@@ -310,6 +309,11 @@
                 "bearerFormat": "JWT"
             }
         }
-    }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
 
 }

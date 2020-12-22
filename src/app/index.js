@@ -17,7 +17,12 @@ const { PORT } = require('../common/environments')
 const {swaggerDocumentAuth,swaggerDocumentProduct,swaggerDocumentUser,swaggerDocumentCity,swaggerDocumentCategory,swaggerDocumentWarehouse}= require('../common/swagger/index')
 require('../common/helpers/handle-uncaught-errors')()
 require('../common/helpers/model-association')()
+<<<<<<< HEAD
 var path = require('path')
+=======
+
+// require('../database/db-sync')()
+>>>>>>> 08eb6f26e0a1d528ee5a6f85ec08cd05acf645e0
 
 // require('../database/db-sync')()
 app.use(express.json())

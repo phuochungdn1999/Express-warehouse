@@ -1,5 +1,5 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
         "title": "My User Project CRUD",
@@ -121,11 +121,12 @@
                     }
 
                 }
-            },"patch": {
+            },
+            "patch": {
                 "summary": "Update city with give ID, before call update, call api get user by id to display all",
                 "tags": ["Cities"],
                 "parameters": [
-                     {
+                    {
                         "name": "city",
                         "in": "body",
                         "description": "City with new values of properties",
@@ -149,8 +150,8 @@
                     }
                 }
             }
-            },
-            
+        },
+
         "/cities/warehouses/{id}": {
             "parameters": [
                 {
@@ -202,58 +203,57 @@
 
         }
 
-    
-
     },
-    "definitions": {"Warehouse": {
-        "required": [
-            "name", "id", "address", "cityId"
-        ],
-        "properties": {
+    "definitions": {
+        "Warehouse": {
+            "required": [
+                "name", "id", "address", "cityId"
+            ],
+            "properties": {
 
-            "id": {
-                "type": "integer"
-            },
-            "name": {
-                "type": "string"
-            },
-            "address": {
-                "type": "string"
-            },
-            "cityId": {
-                "type": "integer"
-            },
-            "description": {
-                "type": "string"
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                }
+
             }
-
-        }
-    },
-    "Warehouses": {
-        "type": "array",
-        "$ref": "#/definitions/Warehouse"
-    },
+        },
+        "Warehouses": {
+            "type": "array",
+            "$ref": "#/definitions/Warehouse"
+        },
         "City": {
-        "required": [
-            "name", "id"
-        ],
-        "properties": {
+            "required": [
+                "name", "id"
+            ],
+            "properties": {
 
-            "id": {
-                "type": "integer"
-            },
-            "name": {
-                "type": "string"
-            },
-            "description": {
-                "type": "string"
-            },
-            "image": {
-                "type": "string"
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                }
+
             }
-
-        }
-    },
+        },
         "Cities": {
             "type": "array",
             "$ref": "#/definitions/City"
@@ -283,7 +283,8 @@
                 }
 
             }
-        },"UpdateCity": {
+        },
+        "UpdateCity": {
             "properties": {
                 "name": {
                     "type": "string"
@@ -308,6 +309,11 @@
                 "bearerFormat": "JWT"
             }
         }
-    }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
 
 }
