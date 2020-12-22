@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "swagger": "2.0",
     "info": {
         "version": "1.0.0",
         "title": "My User Project CRUD",
@@ -9,7 +9,7 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "host": "managewarehouse.herokuapp.com",
+    "host": "localhost:3000",
     "paths": {
         "/auth": {
             "post": {
@@ -84,7 +84,7 @@
         }
 
     },
-    "schemes": ["https"],
+    "schemes": ["http"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "components": {
