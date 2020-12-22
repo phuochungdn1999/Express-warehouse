@@ -309,11 +309,6 @@
                 "bearerFormat": "JWT"
             }
         }
-    },
-    "security": [
-        {
-            "bearerAuth": []
-        }
-    ]
+    }
 
 }
