@@ -87,7 +87,9 @@ async function getUserHistories(req, res) {
   let options = pagination(req.query, itemCount)
   options = {
     ...options,
-    where: { [Op.or]: warehouseIds },
+    where: { 
+      [Op.or]: warehouseIds 
+    },
     include: [
       {
         model: Warehouse,
@@ -104,6 +106,15 @@ async function getUserHistories(req, res) {
         as: 'products',
         attributes: ['name', 'image'],
         through: { attributes: ['amount'] }
+      },
+      {
+        model: User,
+        as: 'users',
+        through: { 
+          where: { userId: { 
+            [Op.ne]: null
+          } } 
+        }
       }
     ],
     order: [
@@ -111,7 +122,8 @@ async function getUserHistories(req, res) {
     ]
   }
 
-  const histories = await repository.getAll(options)
+  let histories = await repository.getAll(options)
+  histories.histories = histories.histories.filter(history => history.users[0].id === user.id)
   return res
     .status(200)
     .json({ data: histories })
