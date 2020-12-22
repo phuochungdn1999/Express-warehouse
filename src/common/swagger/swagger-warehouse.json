@@ -15,16 +15,16 @@
             "get": {
                 "tags": ["Warehouses"],
                 "summary": "Get all warehouses in system",
-                "parameters": [
+                "parameters": [{
+                    "in": "header",
+                    "name": "Authorization",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                    }
+                },
                     {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                        }
-                    }, {
                         "in": "query",
                         "name": "page",
                         "schema": {
@@ -91,18 +91,17 @@
                 }
             }
 
-        },
-        "/warehouses/{id}": {
-            "parameters": [
+        },"/warehouses/{id}": {
+            "parameters": [{
+                "in": "header",
+                "name": "Authorization",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
+                }
+            },
                 {
-                    "in": "header",
-                    "name": "Authorization",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                    }
-                }, {
                     "name": "id",
                     "in": "path",
                     "required": true,
@@ -122,12 +121,11 @@
                     }
 
                 }
-            },
-            "patch": {
+            },"patch": {
                 "summary": "Update warehouse with give ID, before call update, call api get warehouse by id to display all",
                 "tags": ["Warehouses"],
                 "parameters": [
-                    {
+                     {
                         "name": "warehouse",
                         "in": "body",
                         "description": "City with new values of properties",
@@ -151,8 +149,7 @@
                     }
                 }
             }
-        },
-        "/warehouses/{id}/users": {
+        },"/warehouses/{id}/users": {
             "parameters": [
                 {
                     "in": "header",
@@ -201,8 +198,7 @@
                 }
             }
 
-        },
-        "/warehouses/user": {
+        },"/warehouses/user": {
             "parameters": [
                 {
                     "in": "header",
@@ -212,37 +208,8 @@
                         "type": "string",
                         "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
                     }
-                }, {
-                    "in": "query",
-                    "name": "page",
-                    "schema": {
-                        "type": "string"
-
-                    }
-
-                }, {
-                    "in": "query",
-                    "name": "limit",
-                    "schema": {
-                        "type": "string"
-
-                    }
-
                 }
             ],
-            "get": {
-                "tags": ["Users"],
-                "summary": "Get warehouse by user ID in system",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Warehouse"
-                        }
-                    }
-
-                }
-            },
             "post": {
                 "tags": ["Users"],
                 "summary": "Add new user to warehouse in system",
@@ -272,6 +239,9 @@
             }
         }
 
+    
+        
+
     },
     "definitions": {
         "Warehouse": {
@@ -289,7 +259,8 @@
                 "address": {
                     "type": "string"
                 },
-                "image": {
+                "image":
+                {
                     "type": "string"
                 },
                 "cityId": {
@@ -304,9 +275,8 @@
         "Warehouses": {
             "type": "array",
             "$ref": "#/definitions/Warehouse"
-        },
-        "UpdateWarehouse": {
-
+        },"UpdateWarehouse": {
+            
             "properties": {
                 "name": {
                     "type": "string"
@@ -314,12 +284,10 @@
                 "address": {
                     "type": "string"
                 },
-                "image": {
+                "image":
+                {
                     "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                }
+                },"description":{"type":"string"}
             }
         },
         "AddWarehouse": {
@@ -336,15 +304,12 @@
                 "address": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
-                },
+                "image":{"type": "string"},
                 "description": {
                     "type": "string"
                 }
             }
-        },
-        "User": {
+        },"User": {
             "required": [
                 "name", "id", "email", "phone"
             ],
@@ -370,8 +335,7 @@
                 }
 
             }
-        },
-        "AddUser": {
+        },"AddUser": {
             "required": [
                 "userId", "warehouseId"
             ],
@@ -409,6 +373,6 @@
                 "bearerFormat": "JWT"
             }
         }
-    }
+    },"security": [{"bearerAuth":[]}]
 
 }
