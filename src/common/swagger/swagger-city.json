@@ -1,5 +1,5 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
         "title": "My User Project CRUD",
@@ -308,6 +308,7 @@
                 "bearerFormat": "JWT"
             }
         }
-    }
+    },"security": [{"bearerAuth":[]}]
+
 
 }
