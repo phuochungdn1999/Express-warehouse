@@ -9,8 +9,7 @@ router.get('/', async (req, res) => {
 })//done
 
 router.post('/', [
-  auth, 
-  checkAction(['CREATE_USER']),
+  
   validateUser
 ], async (req, res) => {
   return await service.createOne(req, res)
