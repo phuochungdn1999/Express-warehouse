@@ -16,14 +16,6 @@
                 "tags": ["Users"],
                 "parameters": [
                     {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                        }
-                    }, {
                         "in": "query",
                         "name": "page",
                         "schema": {
@@ -91,29 +83,13 @@
                     "required": true,
                     "description": "ID of user that we want to find",
                     "type": "integer"
-                }, {
-                    "in": "header",
-                    "name": "Authorization",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                    }
                 }
             ],
             "get": {
                 "tags": ["Users"],
                 "summary": "Get users with given in system",
                 "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                        }
-                    }
+                    
                 ],
                 "responses": {
                     "200": {
@@ -129,15 +105,7 @@
                 "summary": "Update user with give ID, before call update, call api get user by id to display all",
                 "tags": ["Users"],
                 "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                        }
-                    }, {
+                     {
                         "name": "user",
                         "in": "body",
                         "description": "User with new values of properties",
@@ -164,15 +132,7 @@
 
         },"/users/search/{text}": {
             "parameters": [
-                {
-                    "in": "header",
-                    "name": "Authorization",
-                    "required": true,
-                    "schema": {
-                        "type": "string",
-                        "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                    }
-                }, {
+                 {
                     "name": "text",
                     "in": "path",
                     "required": true,
