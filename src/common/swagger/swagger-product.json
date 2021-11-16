@@ -10,14 +10,14 @@
         }
     },
     "host": ["managewarehouse.herokuapp.com"],
-    
+
     "paths": {
         "/products": {
             "get": {
                 "tags": ["Products"],
                 "summary": "Get all product in system",
                 "parameters": [
-                     {
+                    {
                         "in": "query",
                         "name": "page",
                         "schema": {
@@ -51,7 +51,7 @@
                 "summary": "Import or Export product in system",
                 "description": "Import or Export product in system",
                 "parameters": [
-                     {
+                    {
                         "name": "product",
                         "in": "body",
                         "description": "product that we want to Import or Export",
@@ -88,7 +88,7 @@
         },
         "/products/{id}": {
             "parameters": [
-                 {
+                {
                     "name": "id",
                     "in": "path",
                     "required": true,
@@ -107,44 +107,45 @@
                         }
                     }
 
-                    }
-                },"patch": {
-                    "summary": "Update product with give ID, before call update, call api get user by id to display all",
-                    "tags": ["Products"],
-                    "parameters": [
-                        {
-                            "in": "header",
-                            "name": "Authorization",
-                            "required": true,
-                            "schema": {
-                                "type": "string",
-                                "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
-                            }
-                        }, {
-                            "name": "product",
-                            "in": "body",
-                            "description": "Product with new values of properties",
-                            "schema": {
-                                "$ref": "#/definitions/UpdateProduct"
-                            }
+                }
+            },
+            "patch": {
+                "summary": "Update product with give ID, before call update, call api get user by id to display all",
+                "tags": ["Products"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Bearer sYFuat5lz1y5v0LrCt7LfqJpo1AkdLgm7LbY6eRibN4NYw9Srf6aMIRJM8KbTwM6"
                         }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "Product is updated"
-                        },
-                        "404": {
-                            "description": "Product  cannot be found",
-                            "schema": {
-                                "$ref": "#/definitions/error400"
-                            }
+                    }, {
+                        "name": "product",
+                        "in": "body",
+                        "description": "Product with new values of properties",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product is updated"
+                    },
+                    "404": {
+                        "description": "Product  cannot be found",
+                        "schema": {
+                            "$ref": "#/definitions/error400"
                         }
                     }
                 }
+            }
         },
         "/products/warehouse/{id}": {
             "parameters": [
-                 {
+                {
                     "name": "id",
                     "in": "path",
                     "required": true,
@@ -180,36 +181,16 @@
                     }
 
                 }
-            },"patch": {
-                "summary": "Update product with give ID, before call update, call api get user by id to display all",
-                "tags": ["Products"],
-                "parameters": [
-                     {
-                        "name": "product",
-                        "in": "body",
-                        "description": "Product with new values of properties",
-                        "schema": {
-                            "$ref": "#/definitions/UpdateProduct"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product is updated"
-                    },
-                    "404": {
-                        "description": "Product  cannot be found",
-                        "schema": {
-                            "$ref": "#/definitions/error400"
-                        }
-                    }
-                }
             }
 
         },
-        
+
         "/Products/search/{productName}": {
-            "security": [{"bearerAuth":[]}],
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
             "parameters": [
 
                 {
@@ -547,6 +528,11 @@
                 "bearerFormat": "JWT"
             }
         }
-    },"security": [{"bearerAuth":[]}]
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
 
 }

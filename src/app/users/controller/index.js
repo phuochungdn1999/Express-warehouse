@@ -3,7 +3,7 @@ const { validateUser } = require('../../../common/models/User')
 const service = require('../service')
 const { auth } = require('../../../common/middlewares/auth')
 const { checkAction } = require('../../../common/middlewares/check-action')
-
+  
 router.get('/', async (req, res) => {
   return await service.getAll(req, res)
 })//done

@@ -12,7 +12,6 @@ router.get('/:id', async (req, res) => {
   return await service.getOne(req, res)
 })//done
 
-
 router.get('/test/:name', async (req, res) => {
   return await service.searchByName(req,res)
 })//done

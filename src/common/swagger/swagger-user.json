@@ -105,6 +105,13 @@
                 "summary": "Update user with give ID, before call update, call api get user by id to display all",
                 "tags": ["Users"],
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of user that we want to find",
+                        "type": "integer"
+                    },
                      {
                         "name": "user",
                         "in": "body",
